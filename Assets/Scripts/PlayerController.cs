@@ -9,26 +9,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _jumpPower = 10;
     /// <summary>空中での方向転換のスピード</summary>
     [SerializeField] float _turnSpeed = 3;
+    [SerializeField] Animator _anim;
     Rigidbody _rb;
-    Animator _anim;
     Vector3 _moveDirection;
+    Vector3 _clickPoint;
     bool _isGround;
     Vector3 _planeNormalVector;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
     }
 
     void Update()
     {
-        Vector3 velo = _moveDirection * _moveSpeed;
+        Vector3 dir = _moveDirection;
+        dir = Camera.main.transform.TransformDirection(dir); //カメラ基準のベクトルに直す
+        dir.y = 0;
+        dir = dir.normalized; // 単位化してある水平方向の入力ベクトル
+        Vector3 velo = dir * _moveSpeed;
         //velo.y = _rb.velocity.y;
         if (!_isGround) // 空中でゆっくり方向転換が可能
         {
             velo = _rb.velocity;
-            if (_moveDirection.magnitude != 0f)
+            if (dir.magnitude != 0f)
             {
                 // 速度の大きさを保持しながら向きを少しずつ変える
                 Vector2 startHoriVelo = new Vector2(_rb.velocity.x, _rb.velocity.z);
@@ -37,7 +41,7 @@ public class PlayerController : MonoBehaviour
                 {
                     horiMag = 10;
                 }
-                Vector2 endHoriVelo = new Vector2(_moveDirection.x * horiMag, _moveDirection.z * horiMag);
+                Vector2 endHoriVelo = new Vector2(dir.x * horiMag, dir.z * horiMag);
                 float turnSpeed = _turnSpeed * Time.deltaTime;
                 Vector2 airHoriVelo = endHoriVelo * turnSpeed + startHoriVelo * (1 - turnSpeed);
                 velo = new Vector3(airHoriVelo.x, _rb.velocity.y, airHoriVelo.y);
@@ -56,7 +60,9 @@ public class PlayerController : MonoBehaviour
             _rb.velocity = onPlaneVelo; // 接地中はvelocityを書き換える
         }
 
-        if (_moveDirection.magnitude != 0)
+        ClickMove();
+
+        if (dir.magnitude != 0)
         {
             velo.y = 0;
             this.transform.forward = velo;
@@ -66,16 +72,25 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector3 dir = context.ReadValue<Vector2>(); // 移動方向
-        dir = new Vector3(dir.x, 0, dir.y);
-        dir = Camera.main.transform.TransformDirection(dir); //カメラ基準のベクトルに直す
-        dir.y = 0;
-        dir = dir.normalized; // 単位化してある水平方向の入力ベクトル
-        _moveDirection = dir;
+        _moveDirection = new Vector3(dir.x, 0, dir.y).normalized;
     }
 
     public void OnFire(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed) Debug.Log("fire");
+    }
+
+    public void PointSet(Vector3 clickWorldPoint)
+    {
+        _clickPoint = clickWorldPoint;
+    }
+
+    void ClickMove()
+    {
+        Vector3 dir = _clickPoint - this.transform.position;
+        dir.y = 0;
+        if (dir.magnitude > 0.1f)  _moveDirection = dir.normalized;
+        else _moveDirection = Vector3.zero;
     }
 
     void LateUpdate()
