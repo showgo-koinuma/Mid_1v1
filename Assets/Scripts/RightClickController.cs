@@ -13,10 +13,11 @@ public class RightClickController : MonoBehaviour
 
     public void OnRightClick(InputAction.CallbackContext _context)
     {
+        Debug.Log(_context.action);
         if (_context.phase == InputActionPhase.Performed)
         {
             Debug.Log(_clickWorldPoint);
-            _playerController.PointSet(_clickWorldPoint);
+            //_playerController.PointSet(_clickWorldPoint);
         }
     }
 

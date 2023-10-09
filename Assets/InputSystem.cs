@@ -56,17 +56,8 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""cdd5e5d5-bb8d-4772-aa71-93a25c2bc62b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CursorPos"",
                     ""type"": ""Value"",
-                    ""id"": ""82e1ca73-70b7-4acd-9945-03e8d7d32455"",
+                    ""id"": ""cdd5e5d5-bb8d-4772-aa71-93a25c2bc62b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -273,26 +264,37 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""4f283d4b-cf57-4ff8-835d-07e954732567"",
+                    ""name"": ""One Modifier"",
+                    ""id"": ""0e715bc5-7141-4292-a611-de3b857b96b0"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""1e55b656-a353-4f04-b3fa-622d625f9ef1"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""d566cda2-829e-4f3f-8219-cdf2c4e14bfb"",
+                    ""name"": ""binding"",
+                    ""id"": ""0fccd1a5-5a42-4618-88db-9c27d6117799"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CursorPos"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -882,7 +884,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
-        m_Player_CursorPos = m_Player.FindAction("CursorPos", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -960,7 +961,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_RightClick;
-    private readonly InputAction m_Player_CursorPos;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
@@ -969,7 +969,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
-        public InputAction @CursorPos => m_Wrapper.m_Player_CursorPos;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -991,9 +990,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @RightClick.started += instance.OnRightClick;
             @RightClick.performed += instance.OnRightClick;
             @RightClick.canceled += instance.OnRightClick;
-            @CursorPos.started += instance.OnCursorPos;
-            @CursorPos.performed += instance.OnCursorPos;
-            @CursorPos.canceled += instance.OnCursorPos;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1010,9 +1006,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @RightClick.started -= instance.OnRightClick;
             @RightClick.performed -= instance.OnRightClick;
             @RightClick.canceled -= instance.OnRightClick;
-            @CursorPos.started -= instance.OnCursorPos;
-            @CursorPos.performed -= instance.OnCursorPos;
-            @CursorPos.canceled -= instance.OnCursorPos;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1199,7 +1192,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
-        void OnCursorPos(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
