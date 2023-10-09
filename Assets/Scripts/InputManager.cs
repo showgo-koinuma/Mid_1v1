@@ -32,6 +32,21 @@ public class InputManager : MonoBehaviour
     int _raycastLayerMask = 1 << 3;
     string[] _typeNameToIndex = new string[] { "RightClick", "Q", "W", "E", "R", "Space", "F", "D", "S", "ESC" };
 
+    private void Awake()
+    {
+        _instance = this;
+        _inputSystem = new InputSystem();
+        InputInitialzie();
+        Initialization();
+    }
+
+    /// <summary>inputの初期化</summary>
+    private void InputInitialzie()
+    {
+        CharacterInputInitialzie();
+    }
+
+    /// <summary>デリゲートの初期化</summary>
     private void Initialization()
     {
         for (int i = 0; i < Enum.GetValues(typeof(InputType)).Length; i++)
@@ -40,20 +55,6 @@ public class InputManager : MonoBehaviour
             _onEnterInputDic.Add((InputType)i, null);
             _onStayInputDic.Add((InputType)i, null);
         }
-    }
-
-    private void Awake()
-    {
-        _inputSystem = new InputSystem();
-        InputInitialzie();
-        _instance = this;
-        Initialization();
-    }
-
-    /// <summary>inputの初期化</summary>
-    private void InputInitialzie()
-    {
-        CharacterInputInitialzie();
     }
 
     /// <summary>キャラクター用inputの初期化</summary>
@@ -118,29 +119,29 @@ public class InputManager : MonoBehaviour
 
     // inputのデリゲート管理たち
     #region
-    public static void SetEnterRaycastInput(InputType type, Action<RaycastHit> action)
+    public void SetEnterRaycastInput(InputType type, Action<RaycastHit> action)
     {
-        Instance._onEnterRaycastInputDic[type] += action;
+        _onEnterRaycastInputDic[type] += action;
     }
-    public static void LiftEnterRaycastInput(InputType type, Action<RaycastHit> action)
+    public void LiftEnterRaycastInput(InputType type, Action<RaycastHit> action)
     {
-        Instance._onEnterRaycastInputDic[type] -= action;
+        _onEnterRaycastInputDic[type] -= action;
     }
-    public static void SetEnterInput(InputType type, Action action)
+    public void SetEnterInput(InputType type, Action action)
     {
-        Instance._onEnterInputDic[type] += action;
+        _onEnterInputDic[type] += action;
     }
-    public static void LiftEnterInput(InputType type, Action action)
+    public void LiftEnterInput(InputType type, Action action)
     {
-        Instance._onEnterInputDic[type] -= action;
+        _onEnterInputDic[type] -= action;
     }
-    public static void SetStayInput(InputType type, Action<RaycastHit> action)
+    public void SetStayInput(InputType type, Action<RaycastHit> action)
     {
-        Instance._onStayInputDic[type] += action;
+        _onStayInputDic[type] += action;
     }
-    public static void LiftStayInput(InputType type, Action<RaycastHit> action)
+    public void LiftStayInput(InputType type, Action<RaycastHit> action)
     {
-        _instance._onStayInputDic[type] -= action;
+        _onStayInputDic[type] -= action;
     }
     #endregion
 

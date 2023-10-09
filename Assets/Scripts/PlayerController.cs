@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 10;
-    [SerializeField] float _jumpPower = 10;
+    //[SerializeField] float _jumpPower = 10;
     /// <summary>空中での方向転換のスピード</summary>
-    [SerializeField] float _turnSpeed = 3;
+    //[SerializeField] float _turnSpeed = 3;
     [SerializeField] Animator _anim;
     Rigidbody _rb;
     Vector3 _moveDirection;
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>クリックしたposをセット</summary>
     void SetMovePos(RaycastHit hit)
     {
-        if (true) // AA出来るobjか判定
+        if (!hit.collider.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
         {
             _posToMove = hit.point;
             _moveDirection = _posToMove - this.transform.position;
@@ -70,8 +70,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        InputManager.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
-    }
+    private void OnEnable() => InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
 }

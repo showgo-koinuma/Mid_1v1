@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Param/CharacterParameter")]
 /// <summary>キャラクターのパラメータ</summary>
-public abstract class CharacterParameter : ScriptableObject
+public class CharacterParameter : ScriptableObject
 {
     [SerializeField] int _maxHp;
     [SerializeField] float _ad;

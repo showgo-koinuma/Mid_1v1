@@ -20,13 +20,13 @@ public abstract class CharacterBase : MonoBehaviour
         _charaParam.DeadAction += DeadCharacter;
     }
 
-    protected abstract void AA();
+    protected abstract void AA(CharacterBase target);
 
     /// <summary>ダメージを与える</summary>
     /// <param name="damage"></param><param name="takenDMChara"></param>
-    protected void DealDamage(int damage, DamageType damageType, CharacterBase takenDMChara)
+    protected void DealDamage(int damage, DamageType damageType, CharacterBase target)
     {
-        takenDMChara.TakeDamage(damage, damageType);
+        target.TakeDamage(damage, damageType);
     }
 
     /// <summary>ダメージを受ける</summary>
@@ -35,6 +35,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         OnTakeDamage();
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
+        Debug.Log(DamageCalculation.Damage(damage, damageType, _charaParam) + "ダメージ受けた");
     }
 
     /// <summary>charaが死んだとき</summary>

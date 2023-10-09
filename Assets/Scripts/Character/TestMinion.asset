@@ -9,22 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9eec9aed5298f074dbd7b8a09cf3cbaf, type: 3}
-  m_Name: Yasuo
+  m_Script: {fileID: 11500000, guid: 0b94f920de604714e9081a76fdc3f466, type: 3}
+  m_Name: TestMinion
   m_EditorClassIdentifier: 
-  _maxHp: 590
-  _ad: 60
+  _maxHp: 100
+  _ad: 0
   _ap: 0
-  _ar: 30
-  _mr: 32
-  _as: 0.697
-  _ms: 345
-  _range: 175
-  _regen: 6.5
-  _hpPerLv: 110
-  _adPerLv: 3
-  _apPerLv: 0
-  _arPerLv: 4.6
-  _mrPerLv: 2.05
-  _asPerLv: 0
-  _regenPerLv: 0.9
+  _ar: 0
+  _mr: 0
+  _as: 0
+  _ms: 0
+  _range: 0
