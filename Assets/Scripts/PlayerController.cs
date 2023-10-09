@@ -30,8 +30,6 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         Vector3 dir = _moveDirection;
-        //dir = Camera.main.transform.TransformDirection(dir); //カメラ基準のベクトルに直す
-        //dir.y = 0;
         _rb.velocity = dir.normalized * _moveSpeed;
 
         if (dir.magnitude != 0)
@@ -52,7 +50,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>クリックしたposをセット</summary>
-    /// <param name="hit"></param>
     void SetMovePos(RaycastHit hit)
     {
         if (true) // AA出来るobjか判定

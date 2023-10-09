@@ -80,27 +80,27 @@ public class InputManager : MonoBehaviour
     }
     void Q(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void W(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void E(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void R(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void F(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void D(InputAction.CallbackContext context)
     {
-        RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
+        if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
     void InputS(InputAction.CallbackContext context)
     {
@@ -112,7 +112,7 @@ public class InputManager : MonoBehaviour
     }
     void InputSpace(InputAction.CallbackContext context)
     {
-        _onEnterInputDic[InputType.RightClick]?.Invoke();
+        _onEnterInputDic[InputType.Space]?.Invoke();
     }
     #endregion
 

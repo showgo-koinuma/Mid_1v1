@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eec9aed5298f074dbd7b8a09cf3cbaf, type: 3}
+  m_Name: Yasuo
+  m_EditorClassIdentifier: 
+  _maxHp: 0
+  _ad: 0
+  _ap: 0
+  _ar: 0
+  _mr: 0
+  _as: 0
+  _ms: 0
+  _range: 0
+  _regen: 0
+  _hpPerLv: 0
+  _adPerLv: 0
+  _apPerLv: 0
+  _arPerLv: 0
+  _mrPerLv: 0
+  _asPerLv: 0
+  _regenPerLv: 0
