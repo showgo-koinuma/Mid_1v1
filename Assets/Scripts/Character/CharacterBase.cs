@@ -3,20 +3,21 @@ using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
 {
-    //[SerializeField] protected CharaParamData _paramData;
     [SerializeField] protected CharacterParameter _charaParam;
+    /// <summary>Awakeのタイミングで実行したい処理を書く</summary>
+    public virtual void AwakeFunction() { }
     /// <summary>yasuoP用</summary>
-    protected event Action OnTakeDamage;
+    protected event Action OnTakeDamage = null;
 
     private void Awake()
     {
         Initialization();
+        AwakeFunction();
     }
 
     /// <summary>パラメータ初期化</summary>
     void Initialization()
     {
-        //_charaParam = new CharacterParameter(_paramData);
         _charaParam.DeadAction += DeadCharacter;
     }
 
@@ -33,9 +34,14 @@ public abstract class CharacterBase : MonoBehaviour
     /// <param name="damage"></param>
     protected void TakeDamage(int damage, DamageType damageType)
     {
-        OnTakeDamage();
+        OnTakeDamage?.Invoke();
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
         Debug.Log(DamageCalculation.Damage(damage, damageType, _charaParam) + "ダメージ受けた");
+    }
+
+    public Vector2 This2DPos()
+    {
+        return new Vector2(this.transform.position.x, this.transform.position.z);
     }
 
     /// <summary>charaが死んだとき</summary>

@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     Rigidbody _rb;
     Vector3 _moveDirection;
     Vector3 _posToMove;
+    bool _isMoving = false;
     bool _isGround = true; // 一応
+    public bool IsMoving { get => _isMoving; }
 
     void Start()
     {
@@ -43,10 +45,7 @@ public class PlayerController : MonoBehaviour
     void CheckMove()
     {
         Vector3 currentDir = _posToMove - this.transform.position;
-        if (Vector3.Angle(_moveDirection, currentDir) > 90)
-        {
-            _moveDirection = Vector3.zero; // _posToMoveを通り過ぎたら止める
-        }
+        if (Vector3.Angle(_moveDirection, currentDir) > 90) StopMove();
     }
 
     /// <summary>クリックしたposをセット</summary>
@@ -57,7 +56,23 @@ public class PlayerController : MonoBehaviour
             _posToMove = hit.point;
             _moveDirection = _posToMove - this.transform.position;
             _moveDirection.y = 0;
+            _isMoving = true;
         }
+    }
+    
+    public void SetAATarget(CharacterBase target)
+    {
+        _posToMove = target.gameObject.transform.position;
+        _moveDirection = _posToMove - this.transform.position;
+        _moveDirection.y = 0;
+        _isMoving = true;
+    }
+
+    /// <summary>移動を止める</summary>
+    public void StopMove()
+    {
+        _moveDirection = Vector3.zero;
+        _isMoving = false;
     }
 
     /// <summary>playerのアニメーション再生</summary>

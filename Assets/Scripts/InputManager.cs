@@ -29,7 +29,7 @@ public class InputManager : MonoBehaviour
     private Dictionary<InputType, Action> _onEnterInputDic = new Dictionary<InputType, Action>();
     /// <summary> “ü—Í’† </summary>
     private Dictionary<InputType, Action<RaycastHit>> _onStayInputDic = new Dictionary<InputType, Action<RaycastHit>>();
-    int _raycastLayerMask = 1 << 3;
+    int _raycastLayerMask = 1 << 3 | 1 << 6 | 1 << 7;
     string[] _typeNameToIndex = new string[] { "RightClick", "Q", "W", "E", "R", "Space", "F", "D", "S", "ESC" };
 
     private void Awake()
