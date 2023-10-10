@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>プレイヤーを動かすコンポーネント</summary>
@@ -8,12 +9,12 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] float _jumpPower = 10;
     /// <summary>空中での方向転換のスピード</summary>
     //[SerializeField] float _turnSpeed = 3;
-    [SerializeField] Animator _anim;
+    [SerializeField] ChampionAnimationCntlr _champAnimContlr;
     Rigidbody _rb;
     Vector3 _moveDirection;
     Vector3 _posToMove;
     bool _isMoving = false;
-    bool _isGround = true; // 一応
+    //bool _isGround = true; // 一応
     public bool IsMoving { get => _isMoving; }
 
     void Start()
@@ -36,9 +37,14 @@ public class PlayerController : MonoBehaviour
 
         if (dir.magnitude != 0)
         {
-            dir.y = 0;
-            this.transform.forward = dir;
+            SetForward(dir);
         }
+    }
+
+    public void SetForward(Vector3 dir)
+    {
+        dir.y = 0;
+        this.transform.forward = dir;
     }
 
     /// <summary>posに到着したかチェック</summary>
@@ -60,7 +66,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    public void SetAATarget(CharacterBase target)
+    public void DesignatTarget(CharacterBase target)
     {
         _posToMove = target.gameObject.transform.position;
         _moveDirection = _posToMove - this.transform.position;
@@ -78,10 +84,9 @@ public class PlayerController : MonoBehaviour
     /// <summary>playerのアニメーション再生</summary>
     void PlayAnimation()
     {
-        if (_anim) // アニメーションの処理
+        if (_champAnimContlr) // アニメーションの処理
         {
-            _anim.SetBool("IsGrounded", _isGround);
-            _anim.SetFloat("Speed", _rb.velocity.magnitude);
+            _champAnimContlr.SetIsMove(_isMoving);
         }
     }
 

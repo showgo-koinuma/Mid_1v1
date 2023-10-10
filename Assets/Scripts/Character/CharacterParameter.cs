@@ -23,6 +23,7 @@ public class CharacterParameter : ScriptableObject
         {
             _hp = value;
             if (_hp > _maxHp) _hp = _maxHp;
+            HpUpdate?.Invoke();
             if (_hp <= 0) DeadAction?.Invoke();
         }
     }
@@ -36,6 +37,7 @@ public class CharacterParameter : ScriptableObject
 
     /// <summary>Dead時に呼ばれる</summary>
     public event Action DeadAction = default;
+    public event Action HpUpdate = default;
 
     /// <summary>パラメータコンストラクタ</summary>
     /// <param name="data"></param>

@@ -3,7 +3,10 @@ using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
 {
-    [SerializeField] protected CharacterParameter _charaParam;
+    [SerializeField] private CharacterParameter _charaParam;
+    public CharacterParameter CharaParam { get => _charaParam; }
+    protected CharacterBase _designatedObject;
+    public CharacterBase DesignatedObject { get => _designatedObject;  set => _designatedObject = value; }
     /// <summary>Awakeのタイミングで実行したい処理を書く</summary>
     public virtual void AwakeFunction() { }
     /// <summary>yasuoP用</summary>
@@ -21,13 +24,11 @@ public abstract class CharacterBase : MonoBehaviour
         _charaParam.DeadAction += DeadCharacter;
     }
 
-    protected abstract void AA(CharacterBase target);
-
     /// <summary>ダメージを与える</summary>
     /// <param name="damage"></param><param name="takenDMChara"></param>
-    protected void DealDamage(int damage, DamageType damageType, CharacterBase target)
+    public void DealDamage(int damage, DamageType damageType, CharacterBase target)
     {
-        target.TakeDamage(damage, damageType);
+        target?.TakeDamage(damage, damageType);
     }
 
     /// <summary>ダメージを受ける</summary>
@@ -36,7 +37,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         OnTakeDamage?.Invoke();
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
-        Debug.Log(DamageCalculation.Damage(damage, damageType, _charaParam) + "ダメージ受けた");
+        Debug.Log(DamageCalculation.Damage(damage, damageType, _charaParam) + "の" + damageType.ToString() + "ダメージ");
     }
 
     public Vector2 This2DPos()
