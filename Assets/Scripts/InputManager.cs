@@ -23,6 +23,8 @@ public class InputManager : MonoBehaviour
             return _instance;
         }
     }
+    /// <summary>カーソル重なったオブジェクトRaycastHit取得</summary>
+    event Action<RaycastHit> _getCursorOnHit;
     /// <summary> 入力直後 </summary>
     private Dictionary<InputType, Action<RaycastHit>> _onEnterRaycastInputDic = new Dictionary<InputType, Action<RaycastHit>>();
     /// <summary> 入力直後 </summary>
@@ -79,41 +81,50 @@ public class InputManager : MonoBehaviour
     {
         if(context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void Q(InputAction.CallbackContext context)
+    public void Q(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void W(InputAction.CallbackContext context)
+    public void W(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void E(InputAction.CallbackContext context)
+    public void E(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void R(InputAction.CallbackContext context)
+    public void R(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void F(InputAction.CallbackContext context)
+    public void F(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void D(InputAction.CallbackContext context)
+    public void D(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started) RaycastInvoke(context, MethodBase.GetCurrentMethod().Name);
     }
-    void InputS(InputAction.CallbackContext context)
+    public void InputS(InputAction.CallbackContext context)
     {
         _onEnterInputDic[InputType.S]?.Invoke();
     }
-    void InputESC(InputAction.CallbackContext context)
+    public void InputESC(InputAction.CallbackContext context)
     {
         _onEnterInputDic[InputType.ESC]?.Invoke();
     }
-    void InputSpace(InputAction.CallbackContext context)
+    public void InputSpace(InputAction.CallbackContext context)
     {
         _onEnterInputDic[InputType.Space]?.Invoke();
+    }
+    public void InputMousePos(InputAction.CallbackContext context)
+    {
+        var ray = Camera.main.ScreenPointToRay(context.ReadValue<Vector2>());
+
+        if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, Mathf.Infinity, _raycastLayerMask))
+        {
+            _getCursorOnHit?.Invoke(hit);
+        }
     }
     #endregion
 
@@ -143,6 +154,10 @@ public class InputManager : MonoBehaviour
     {
         _onStayInputDic[type] -= action;
     }
+    public void SetGetCursorOnHit(Action<RaycastHit> action)
+    {
+        _getCursorOnHit += action;
+    }
     #endregion
 
     private void OnDestroy()
@@ -159,6 +174,7 @@ public class InputManager : MonoBehaviour
             _instance._onEnterInputDic[(InputType)i] = null;
             _instance._onStayInputDic[(InputType)i] = null;
         }
+        _getCursorOnHit = null;
     }
 }
 
