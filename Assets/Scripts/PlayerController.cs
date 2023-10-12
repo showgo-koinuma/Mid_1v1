@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
     }
 
     void Update()
@@ -89,6 +90,4 @@ public class PlayerController : MonoBehaviour
             _champAnimContlr.SetIsMove(_isMoving);
         }
     }
-
-    private void OnEnable() => InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
 }

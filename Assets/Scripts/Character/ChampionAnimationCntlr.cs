@@ -14,10 +14,9 @@ public class ChampionAnimationCntlr : MonoBehaviour
         _champAA = _champContlr.gameObject.GetComponent<ChampAA>();
     }
 
-    public void StartAAAnimation()
-    {
-        _animator.SetTrigger("AA");
-    }
+    public void StartAAAnimation() => _animator.SetTrigger("AA");
+
+    public void StartQAnimation() => _animator.SetTrigger("Q");
 
     public void SetIsMove(bool isMove)
     {

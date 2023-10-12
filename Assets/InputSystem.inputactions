@@ -6,6 +6,15 @@
             "id": "202aaa4f-fc4d-47b9-8d06-23b7536055f5",
             "actions": [
                 {
+                    "name": "MouseSelect",
+                    "type": "Value",
+                    "id": "e5fc4530-7b9c-4455-a22f-1d92a2c0067f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "RightClick",
                     "type": "Value",
                     "id": "cdd5e5d5-bb8d-4772-aa71-93a25c2bc62b",
@@ -15,9 +24,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MouseSelect",
+                    "name": "Q",
                     "type": "Value",
-                    "id": "e5fc4530-7b9c-4455-a22f-1d92a2c0067f",
+                    "id": "16be2183-1ac7-4749-857e-dfc77b126dd2",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -25,6 +34,50 @@
                 }
             ],
             "bindings": [
+                {
+                    "name": "",
+                    "id": "d56e588b-b24b-4a34-92d6-9614901d3368",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "0b51d9c8-389d-445a-a303-79f8dd874289",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Q",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c2d518ef-6d20-4abf-8df7-cfe4671bd082",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Q",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "4738c021-12c2-44f7-ab1e-3c932f166ff0",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Q",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
                 {
                     "name": "One Modifier",
                     "id": "0e715bc5-7141-4292-a611-de3b857b96b0",
@@ -57,17 +110,6 @@
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "d56e588b-b24b-4a34-92d6-9614901d3368",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseSelect",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },

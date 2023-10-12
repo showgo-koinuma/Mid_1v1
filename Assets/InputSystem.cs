@@ -28,6 +28,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             ""id"": ""202aaa4f-fc4d-47b9-8d06-23b7536055f5"",
             ""actions"": [
                 {
+                    ""name"": ""MouseSelect"",
+                    ""type"": ""Value"",
+                    ""id"": ""e5fc4530-7b9c-4455-a22f-1d92a2c0067f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""RightClick"",
                     ""type"": ""Value"",
                     ""id"": ""cdd5e5d5-bb8d-4772-aa71-93a25c2bc62b"",
@@ -37,9 +46,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MouseSelect"",
+                    ""name"": ""Q"",
                     ""type"": ""Value"",
-                    ""id"": ""e5fc4530-7b9c-4455-a22f-1d92a2c0067f"",
+                    ""id"": ""16be2183-1ac7-4749-857e-dfc77b126dd2"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -47,6 +56,50 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d56e588b-b24b-4a34-92d6-9614901d3368"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""0b51d9c8-389d-445a-a303-79f8dd874289"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Q"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c2d518ef-6d20-4abf-8df7-cfe4671bd082"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""4738c021-12c2-44f7-ab1e-3c932f166ff0"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
                 {
                     ""name"": ""One Modifier"",
                     ""id"": ""0e715bc5-7141-4292-a611-de3b857b96b0"",
@@ -79,17 +132,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d56e588b-b24b-4a34-92d6-9614901d3368"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseSelect"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -675,8 +717,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
         m_Player_MouseSelect = m_Player.FindAction("MouseSelect", throwIfNotFound: true);
+        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
+        m_Player_Q = m_Player.FindAction("Q", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -750,14 +793,16 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_RightClick;
     private readonly InputAction m_Player_MouseSelect;
+    private readonly InputAction m_Player_RightClick;
+    private readonly InputAction m_Player_Q;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
         public PlayerActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputAction @MouseSelect => m_Wrapper.m_Player_MouseSelect;
+        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
+        public InputAction @Q => m_Wrapper.m_Player_Q;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -767,22 +812,28 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @RightClick.started += instance.OnRightClick;
-            @RightClick.performed += instance.OnRightClick;
-            @RightClick.canceled += instance.OnRightClick;
             @MouseSelect.started += instance.OnMouseSelect;
             @MouseSelect.performed += instance.OnMouseSelect;
             @MouseSelect.canceled += instance.OnMouseSelect;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
+            @Q.started += instance.OnQ;
+            @Q.performed += instance.OnQ;
+            @Q.canceled += instance.OnQ;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @RightClick.started -= instance.OnRightClick;
-            @RightClick.performed -= instance.OnRightClick;
-            @RightClick.canceled -= instance.OnRightClick;
             @MouseSelect.started -= instance.OnMouseSelect;
             @MouseSelect.performed -= instance.OnMouseSelect;
             @MouseSelect.canceled -= instance.OnMouseSelect;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
+            @Q.started -= instance.OnQ;
+            @Q.performed -= instance.OnQ;
+            @Q.canceled -= instance.OnQ;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -965,8 +1016,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnRightClick(InputAction.CallbackContext context);
         void OnMouseSelect(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
+        void OnQ(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

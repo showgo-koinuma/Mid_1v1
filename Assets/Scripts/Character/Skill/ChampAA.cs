@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChampAA : MonoBehaviour
@@ -16,6 +15,7 @@ public class ChampAA : MonoBehaviour
         _animationCntlr = _champContlr.ChampAnimContlr;
     }
 
+    /// <summary>animatin event AAƒqƒbƒgŒø‰Ê</summary>
     public void AA()
     {
         _champContlr.DealDamage((int)_charaParam.AD, DamageType.AD, _champContlr.DesignatedObject);
@@ -50,5 +50,5 @@ public class ChampAA : MonoBehaviour
         }
     }
 
-    private void OnEnable() => InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.AATargetSet);
+    private void Start() => InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.AATargetSet);
 }

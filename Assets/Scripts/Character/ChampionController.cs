@@ -26,9 +26,9 @@ public class ChampionController : CharacterBase
         }
         else
         {
-            action?.Invoke();
-            _playerCntlr.SetForward(_designatedObject.transform.position - this.transform.position);
             _playerCntlr.StopMove();
+            _playerCntlr.SetForward(_designatedObject.transform.position - this.transform.position);
+            action?.Invoke();
             yield break;
         }
     }
