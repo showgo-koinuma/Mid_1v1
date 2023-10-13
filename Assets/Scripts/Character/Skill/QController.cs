@@ -45,7 +45,7 @@ public class QController : MonoBehaviour
     void QOccurrenceJudg() // 9.5
     {
         var hitObjects = Physics.OverlapCapsule(this.transform.position, this.transform.position + this.transform.forward * 9, 0.5f, 1 << 7);
-        int damage = 20 + (int)(_charaParam.AD * 105);
+        int damage = 20 + (int)(_charaParam.AD * 1.05f);
 
         foreach (var hitObject in hitObjects)
         {
