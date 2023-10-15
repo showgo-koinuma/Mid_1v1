@@ -1,30 +1,27 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>プレイヤーを動かすコンポーネント</summary>
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 10;
-    //[SerializeField] float _jumpPower = 10;
-    /// <summary>空中での方向転換のスピード</summary>
-    //[SerializeField] float _turnSpeed = 3;
     [SerializeField] ChampionAnimationCntlr _champAnimContlr;
+    ChampionManager _champManager;
     Rigidbody _rb;
     Vector3 _moveDirection;
     Vector3 _posToMove;
     bool _isMoving = false;
-    //bool _isGround = true; // 一応
-    public bool IsMoving { get => _isMoving; }
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _champManager = GetComponent<ChampionManager>();
         InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
     }
 
     void Update()
     {
+        if (_champManager.ChampState == ChampionState.channeling || _champManager.ChampState == ChampionState.dead) return;
         CheckMove();
         Move();
         PlayAnimation();
@@ -39,7 +36,9 @@ public class PlayerController : MonoBehaviour
         if (dir.magnitude != 0)
         {
             SetForward(dir);
+            _champManager.ChampState = ChampionState.Moving;
         }
+        else _champManager.ChampState = ChampionState.Idle;
     }
 
     public void SetForward(Vector3 dir)
@@ -67,6 +66,8 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    /// <summary>対象指定用 指定したobjに向かって移動</summary>
+    /// <param name="target"></param>
     public void DesignatTarget(CharacterBase target)
     {
         _posToMove = target.gameObject.transform.position;
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
     public void StopMove()
     {
         _moveDirection = Vector3.zero;
+        _rb.velocity = Vector3.zero;
         _isMoving = false;
     }
 

@@ -3,21 +3,23 @@ using UnityEngine;
 
 public class QController : MonoBehaviour
 {
-    PlayerController _playerController;
-    ChampionController _champContlr;
+    PlayerMove _playerMove;
+    ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
     float _cd = 4;
     bool _isCD = false;
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
     float _hitOccurrenceDelay = 0.1f;
+    /// <summary>Channeling時間</summary>
+    float _channelingTime = 0.5f;
 
     private void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
-        _champContlr = GetComponent<ChampionController>();
-        _charaParam = _champContlr.CharaParam;
-        _animationCntlr = _champContlr.ChampAnimContlr;
+        _playerMove = GetComponent<PlayerMove>();
+        _champManager = GetComponent<ChampionManager>();
+        _charaParam = _champManager.CharaParam;
+        _animationCntlr = _champManager.ChampAnimContlr;
     }
     
     void Start() => InputManager.Instance.SetEnterRaycastInput(InputType.Q, this.OnQ);
@@ -33,11 +35,14 @@ public class QController : MonoBehaviour
 
     IEnumerator Qstart(RaycastHit hit)
     {
-        _playerController.StopMove();
-        _playerController.SetForward(hit.point - this.transform.position);
+        _champManager.ChampState = ChampionState.channeling;
+        _playerMove.StopMove();
+        _playerMove.SetForward(hit.point - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
-        yield return new WaitForSeconds(_cd);
+        yield return new WaitForSeconds(_channelingTime);
+        if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
+        yield return new WaitForSeconds(_cd - _channelingTime); // TODO:UI反映出来なさそう
         _isCD = false;
     }
 
@@ -51,7 +56,7 @@ public class QController : MonoBehaviour
         {
             if (hitObject.TryGetComponent(out CharacterBase characterBase))
             {
-                _champContlr.DealDamage(damage, DamageType.AD, characterBase);
+                _champManager.DealDamage(damage, DamageType.AD, characterBase);
             }
         }
     }
@@ -62,6 +67,8 @@ public class QController : MonoBehaviour
         DrawCapsuleGizmo(this.transform.position, this.transform.position + this.transform.forward * 9, 0.5f);
     }
 
+    /// <summary>Q当たり判定カプセルのGizmoを表示</summary>
+    /// <param name="start"></param><param name="end"></param>param name="radius"></param>
     public void DrawCapsuleGizmo(Vector3 start, Vector3 end, float radius)
     {
         var preMatrix = Gizmos.matrix;

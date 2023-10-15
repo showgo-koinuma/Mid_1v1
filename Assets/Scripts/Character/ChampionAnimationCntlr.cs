@@ -4,14 +4,14 @@ using UnityEngine;
 public class ChampionAnimationCntlr : MonoBehaviour
 {
     Animator _animator;
-    ChampionController _champContlr;
+    ChampionManager _champManager;
     ChampAA _champAA;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _champContlr = transform.parent.gameObject.GetComponent<ChampionController>();
-        _champAA = _champContlr.gameObject.GetComponent<ChampAA>();
+        _champManager = transform.parent.gameObject.GetComponent<ChampionManager>();
+        _champAA = _champManager.gameObject.GetComponent<ChampAA>();
     }
 
     public void StartAAAnimation() => _animator.SetTrigger("AA");

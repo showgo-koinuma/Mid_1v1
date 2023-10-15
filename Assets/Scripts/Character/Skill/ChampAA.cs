@@ -3,22 +3,22 @@ using UnityEngine;
 
 public class ChampAA : MonoBehaviour
 {
-    ChampionController _champContlr;
+    ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
     bool _AAing;
 
     private void Awake()
     {
-        _champContlr = GetComponent<ChampionController>();
-        _charaParam = _champContlr.CharaParam;
-        _animationCntlr = _champContlr.ChampAnimContlr;
+        _champManager = GetComponent<ChampionManager>();
+        _charaParam = _champManager.CharaParam;
+        _animationCntlr = _champManager.ChampAnimContlr;
     }
 
     /// <summary>animatin event AAÉqÉbÉgå¯â </summary>
     public void AA()
     {
-        _champContlr.DealDamage((int)_charaParam.AD, DamageType.AD, _champContlr.DesignatedObject);
+        _champManager.DealDamage((int)_charaParam.AD, DamageType.AD, _champManager.DesignatedObject);
     }
 
     IEnumerator AAing()
@@ -40,12 +40,12 @@ public class ChampAA : MonoBehaviour
     {
         if (hit.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AAèoóàÇÈobjÇ©îªíË
         {
-            _champContlr.DesignatedObject = characterBase;
-            StartCoroutine(_champContlr.TargetDesignationCheck(_charaParam.Range, StartAA));
+            _champManager.DesignatedObject = characterBase;
+            StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
         }
         else
         {
-            _champContlr.DesignatedObject = null;
+            _champManager.DesignatedObject = null;
             _AAing = false;
         }
     }
