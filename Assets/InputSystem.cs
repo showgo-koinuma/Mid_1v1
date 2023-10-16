@@ -53,6 +53,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""S"",
+                    ""type"": ""Button"",
+                    ""id"": ""21ad51a6-87fe-4782-b930-4a7b4f62526e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b18cf1c-6e3d-4317-9924-02f7321836a4"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""S"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -720,6 +740,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_MouseSelect = m_Player.FindAction("MouseSelect", throwIfNotFound: true);
         m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
         m_Player_Q = m_Player.FindAction("Q", throwIfNotFound: true);
+        m_Player_S = m_Player.FindAction("S", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -796,6 +817,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseSelect;
     private readonly InputAction m_Player_RightClick;
     private readonly InputAction m_Player_Q;
+    private readonly InputAction m_Player_S;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
@@ -803,6 +825,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @MouseSelect => m_Wrapper.m_Player_MouseSelect;
         public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputAction @Q => m_Wrapper.m_Player_Q;
+        public InputAction @S => m_Wrapper.m_Player_S;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -821,6 +844,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Q.started += instance.OnQ;
             @Q.performed += instance.OnQ;
             @Q.canceled += instance.OnQ;
+            @S.started += instance.OnS;
+            @S.performed += instance.OnS;
+            @S.canceled += instance.OnS;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -834,6 +860,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Q.started -= instance.OnQ;
             @Q.performed -= instance.OnQ;
             @Q.canceled -= instance.OnQ;
+            @S.started -= instance.OnS;
+            @S.performed -= instance.OnS;
+            @S.canceled -= instance.OnS;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1019,6 +1048,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnMouseSelect(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnQ(InputAction.CallbackContext context);
+        void OnS(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

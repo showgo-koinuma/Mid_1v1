@@ -875,7 +875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b342d8ce5c2fd48b8fa3147d48d1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Effectors:
   - m_Transform: {fileID: 2100367817}
     m_Style:
@@ -938,6 +938,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1114636432893988457, guid: 3dd1b6ea16de3184884bde7c4232068c, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1296283152185407096, guid: 3dd1b6ea16de3184884bde7c4232068c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.1089993
@@ -1441,6 +1445,10 @@ PrefabInstance:
     - target: {fileID: 8926815261874035752, guid: 3dd1b6ea16de3184884bde7c4232068c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040140933154812643, guid: 3dd1b6ea16de3184884bde7c4232068c, type: 3}
+      propertyPath: m_Radius
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2574,6 +2582,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 16be2183-1ac7-4749-857e-dfc77b126dd2
     m_ActionName: Player/Q[/Keyboard/q,/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1655996051}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: InputS
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 21ad51a6-87fe-4782-b930-4a7b4f62526e
+    m_ActionName: Player/S[/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

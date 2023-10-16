@@ -17,6 +17,7 @@ public class PlayerMove : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _champManager = GetComponent<ChampionManager>();
         InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.SetMovePos);
+        InputManager.Instance.SetEnterInput(InputType.S, StopMove);
     }
 
     void Update()

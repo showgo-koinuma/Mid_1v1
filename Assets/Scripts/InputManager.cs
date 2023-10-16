@@ -107,7 +107,7 @@ public class InputManager : MonoBehaviour
     }
     public void InputS(InputAction.CallbackContext context)
     {
-        _onEnterInputDic[InputType.S]?.Invoke();
+        if (context.phase == InputActionPhase.Started) _onEnterInputDic[InputType.S]?.Invoke();
     }
     public void InputESC(InputAction.CallbackContext context)
     {
@@ -134,25 +134,13 @@ public class InputManager : MonoBehaviour
     {
         _onEnterRaycastInputDic[type] += action;
     }
-    public void LiftEnterRaycastInput(InputType type, Action<RaycastHit> action)
-    {
-        _onEnterRaycastInputDic[type] -= action;
-    }
     public void SetEnterInput(InputType type, Action action)
     {
         _onEnterInputDic[type] += action;
     }
-    public void LiftEnterInput(InputType type, Action action)
-    {
-        _onEnterInputDic[type] -= action;
-    }
     public void SetStayInput(InputType type, Action<RaycastHit> action)
     {
         _onStayInputDic[type] += action;
-    }
-    public void LiftStayInput(InputType type, Action<RaycastHit> action)
-    {
-        _onStayInputDic[type] -= action;
     }
     public void SetGetCursorOnHit(Action<RaycastHit> action)
     {
