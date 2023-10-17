@@ -36,8 +36,8 @@ public class QController : MonoBehaviour
 
     IEnumerator Qstart(RaycastHit hit)
     {
-        _champManager.ChampState = ChampionState.channeling;
         _playerMove.StopMove();
+        _champManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(hit.point - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);

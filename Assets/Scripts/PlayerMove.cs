@@ -22,7 +22,7 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        if (_champManager.ChampState == ChampionState.channeling || _champManager.ChampState == ChampionState.dead) return;
+        if (_champManager.ChampState != ChampionState.Idle && _champManager.ChampState != ChampionState.Moving) return;
         CheckMove();
         Move();
         PlayAnimation();
@@ -31,8 +31,9 @@ public class PlayerMove : MonoBehaviour
     /// <summary>playerの移動、正面の調整</summary>
     void Move()
     {
-        Vector3 dir = _moveDirection;
-        _rb.velocity = dir.normalized * _moveSpeed;
+        Vector3 dir = _moveDirection.normalized * _moveSpeed;
+        dir.y = _rb.velocity.y;
+        _rb.velocity = dir;
 
         if (dir.magnitude != 0)
         {
@@ -44,6 +45,7 @@ public class PlayerMove : MonoBehaviour
 
     public void SetForward(Vector3 dir)
     {
+        if (dir.magnitude == 0) return;
         dir.y = 0;
         this.transform.forward = dir;
     }
@@ -69,7 +71,7 @@ public class PlayerMove : MonoBehaviour
     
     /// <summary>対象指定用 指定したobjに向かって移動</summary>
     /// <param name="target"></param>
-    public void DesignatTarget(CharacterBase target)
+    public void MoveToDesignatTarget(CharacterBase target)
     {
         _posToMove = target.gameObject.transform.position;
         _moveDirection = _posToMove - this.transform.position;
@@ -77,11 +79,12 @@ public class PlayerMove : MonoBehaviour
         _isMoving = true;
     }
 
-    /// <summary>移動を止める</summary>
+    /// <summary>移動を止める StateがIdleになる</summary>
     public void StopMove()
     {
+        _champManager.ChampState = ChampionState.Idle;
         _moveDirection = Vector3.zero;
-        _rb.velocity = Vector3.zero;
+        _rb.velocity = Vector3.zero + Vector3.up * _rb.velocity.y;
         _isMoving = false;
     }
 

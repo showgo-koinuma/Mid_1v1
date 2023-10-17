@@ -22,7 +22,7 @@ public class ChampionManager : CharacterBase
         if (!_designatedObject) yield break;
         if (Range * 0.02f < (_designatedObject.This2DPos() - this.This2DPos()).magnitude) // RangeŠO
         {
-            _playerMove.DesignatTarget(_designatedObject);
+            _playerMove.MoveToDesignatTarget(_designatedObject);
             yield return null;
             StartCoroutine(TargetDesignationCheck(Range, action));
         }
@@ -38,6 +38,14 @@ public class ChampionManager : CharacterBase
     protected override void DeadCharacter()
     {
     }
+
+    protected override IEnumerator KnockUp(float sec)
+    {
+        _playerMove.StopMove();
+        _champState = ChampionState.airborne;
+        yield return new WaitForSeconds(sec);
+        _champState = ChampionState.Idle;
+    }
 }
 
 public enum ChampionState
@@ -45,5 +53,6 @@ public enum ChampionState
     Idle,
     Moving,
     channeling,
+    airborne,
     dead
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
@@ -44,6 +45,10 @@ public abstract class CharacterBase : MonoBehaviour
     {
         return new Vector2(this.transform.position.x, this.transform.position.z);
     }
+
+    /// <summary>キャラをノックアップさせる(秒)</summary>
+    /// <param name="sec"></param>
+    protected abstract IEnumerator KnockUp(float sec);
 
     /// <summary>charaが死んだとき</summary>
     protected abstract void DeadCharacter();
