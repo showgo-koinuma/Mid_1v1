@@ -9,6 +9,7 @@ public class QController : MonoBehaviour
     ChampionAnimationCntlr _animationCntlr;
     float _cd = 4;
     bool _isCD = false;
+    int _stack = 0;
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
     float _hitOccurrenceDelay = 0.1f;
     /// <summary>Channeling時間</summary>
@@ -51,14 +52,18 @@ public class QController : MonoBehaviour
     {
         var hitObjects = Physics.OverlapCapsule(this.transform.position, this.transform.position + this.transform.forward * 9, 0.5f, 1 << 7);
         int damage = 20 + (int)(_charaParam.AD * 1.05f);
+        bool isHit = false;
 
         foreach (var hitObject in hitObjects)
         {
             if (hitObject.TryGetComponent(out CharacterBase characterBase))
             {
                 _champManager.DealDamage(damage, DamageType.AD, characterBase);
+                isHit = true;
             }
         }
+
+        if (isHit && _stack < 2) _stack++;
     }
 
     void OnDrawGizmosSelected()
