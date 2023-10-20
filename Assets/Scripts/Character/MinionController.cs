@@ -13,7 +13,7 @@ public class MinionController : CharacterBase
     public override IEnumerator KnockUp(float sec)
     {
         _minionState = MinionState.airborne;
-        this.transform.DOJump(Vector3.zero, sec, 1, sec);
+        this.transform.DOJump(this.transform.position, sec, 1, sec);
         yield return new WaitForSeconds(sec);
         _minionState = MinionState.Moving;
     }

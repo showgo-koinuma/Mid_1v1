@@ -38,7 +38,7 @@ public abstract class CharacterBase : MonoBehaviour
     {
         OnTakeDamage?.Invoke();
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
-        Debug.Log(DamageCalculation.Damage(damage, damageType, _charaParam) + "の" + damageType.ToString() + "ダメージ");
+        Debug.Log(this.gameObject.name + "に" + DamageCalculation.Damage(damage, damageType, _charaParam) + "の" + damageType.ToString() + "ダメージ");
     }
 
     public Vector2 This2DPos()

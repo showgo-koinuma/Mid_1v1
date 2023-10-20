@@ -11,10 +11,12 @@ public class QController : MonoBehaviour
     float _cd = 1;
     bool _isCD = false;
     int _stack = 0;
+    Vector3 _hitPoint;
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
     float _hitOccurrenceDelay = 0.1f;
     /// <summary>Channeling時間</summary>
     float _channelingTime = 0.5f;
+    int _layerMask = 1 << 10 | 1 << 11 | 1 << 12;
 
     private void Awake()
     {
@@ -30,6 +32,7 @@ public class QController : MonoBehaviour
     {
         if (!_isCD)
         {
+            _hitPoint = hit.point;
             if (_stack < 2) StartCoroutine(Qstart(hit));
             else StartCoroutine(Q3start(hit));
             _isCD = true;
@@ -40,7 +43,7 @@ public class QController : MonoBehaviour
     {
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
-        _playerMove.SetForward(hit.point - this.transform.position);
+        _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
         yield return new WaitForSeconds(_channelingTime);
@@ -53,9 +56,9 @@ public class QController : MonoBehaviour
     {
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
-        _playerMove.SetForward(hit.point - this.transform.position);
+        _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQ3Animation();
-        Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay);
+        Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay); // nameofで出来ない？
         _stack = 0;
         yield return new WaitForSeconds(_channelingTime); // channelingTimeは同じか
         if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
@@ -66,7 +69,7 @@ public class QController : MonoBehaviour
     /// <summary>当たり判定とhit効果</summary>
     void QOccurrenceJudg() // 9.5
     {
-        var hitObjects = Physics.OverlapCapsule(this.transform.position, this.transform.position + this.transform.forward * 9, 0.5f, 1 << 7);
+        var hitObjects = Physics.OverlapCapsule(this.transform.position, this.transform.position + this.transform.forward * 9, 0.5f,  _layerMask, QueryTriggerInteraction.Collide);
         int damage = 20 + (int)(_charaParam.AD * 1.05f);
         bool isHit = false;
 
@@ -86,7 +89,7 @@ public class QController : MonoBehaviour
     void Q3OccurrenceJudg()
     {
         GameObject q3obj = Instantiate(_Q3obj, this.transform.position, Quaternion.identity);
-        q3obj.GetComponent<TornadoCntlr>().SetForwardToMove(this.transform.forward);
+        q3obj.GetComponent<TornadoCntlr>().Initialization(_hitPoint, 20 + (int)(_charaParam.AD * 1.05f));
     }
 
     void OnDrawGizmosSelected()
