@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 10;
     [SerializeField] ChampionAnimationCntlr _champAnimContlr;
+    [SerializeField] GameObject _clickEffectObj;
     ChampionManager _champManager;
     Rigidbody _rb;
     Vector3 _moveDirection;
@@ -66,6 +67,7 @@ public class PlayerMove : MonoBehaviour
             _moveDirection = _posToMove - this.transform.position;
             _moveDirection.y = 0;
             _isMoving = true;
+            Instantiate(_clickEffectObj).transform.position = hit.point + Vector3.up * 0.01f;
         }
     }
     

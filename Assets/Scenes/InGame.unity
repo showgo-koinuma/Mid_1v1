@@ -2152,6 +2152,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Champion
       objectReference: {fileID: 0}
+    - target: {fileID: 4342013019322013778, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
+      propertyPath: _clickEffectObj
+      value: 
+      objectReference: {fileID: 2608211711081136085, guid: 519f8199e30ca6840a7686dc5b9890ba, type: 3}
     - target: {fileID: 6565835849438915989, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
