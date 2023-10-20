@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour
         dir.y = _rb.velocity.y;
         _rb.velocity = dir;
 
-        if (dir.magnitude != 0)
+        if (dir.x != 0 || dir.z != 0)
         {
             SetForward(dir);
             _champManager.ChampState = ChampionState.Moving;

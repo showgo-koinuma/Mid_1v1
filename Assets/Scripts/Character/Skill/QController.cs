@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class QController : MonoBehaviour
 {
+    [SerializeField] GameObject _Q3obj;
     PlayerMove _playerMove;
     ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
-    float _cd = 4;
+    float _cd = 1;
     bool _isCD = false;
     int _stack = 0;
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
@@ -29,7 +30,8 @@ public class QController : MonoBehaviour
     {
         if (!_isCD)
         {
-             StartCoroutine(Qstart(hit));
+            if (_stack < 2) StartCoroutine(Qstart(hit));
+            else StartCoroutine(Q3start(hit));
             _isCD = true;
         }
     }
@@ -42,6 +44,20 @@ public class QController : MonoBehaviour
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
         yield return new WaitForSeconds(_channelingTime);
+        if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
+        yield return new WaitForSeconds(_cd - _channelingTime); // TODO:UI反映出来なさそう
+        _isCD = false;
+    }
+
+    IEnumerator Q3start(RaycastHit hit)
+    {
+        _playerMove.StopMove();
+        _champManager.ChampState = ChampionState.channeling;
+        _playerMove.SetForward(hit.point - this.transform.position);
+        _animationCntlr.StartQ3Animation();
+        Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay);
+        _stack = 0;
+        yield return new WaitForSeconds(_channelingTime); // channelingTimeは同じか
         if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
         yield return new WaitForSeconds(_cd - _channelingTime); // TODO:UI反映出来なさそう
         _isCD = false;
@@ -64,6 +80,13 @@ public class QController : MonoBehaviour
         }
 
         if (isHit && _stack < 2) _stack++;
+    }
+
+    /// <summary>Q3を飛ばす</summary>
+    void Q3OccurrenceJudg()
+    {
+        GameObject q3obj = Instantiate(_Q3obj, this.transform.position, Quaternion.identity);
+        q3obj.GetComponent<TornadoCntlr>().SetForwardToMove(this.transform.forward);
     }
 
     void OnDrawGizmosSelected()

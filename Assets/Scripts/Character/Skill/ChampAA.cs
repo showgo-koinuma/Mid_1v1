@@ -6,7 +6,8 @@ public class ChampAA : MonoBehaviour
     ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
-    bool _AAing;
+    //bool _AAing;
+    Coroutine _AACoroutine;
 
     private void Awake()
     {
@@ -23,15 +24,15 @@ public class ChampAA : MonoBehaviour
 
     IEnumerator AAing()
     {
-        _AAing = true;
+        //_AAing = true;
         _animationCntlr.StartAAAnimation();
         yield return new WaitForSeconds(1);
-        if (_AAing) StartCoroutine(AAing());
+        if (_AACoroutine != null) _AACoroutine = StartCoroutine(AAing());
     }
 
     void StartAA()
     {
-        if (!_AAing) StartCoroutine(AAing());
+        if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
     }
 
     /// <summary>AAのターゲットをセットする</summary>
@@ -41,12 +42,17 @@ public class ChampAA : MonoBehaviour
         if (hit.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
         {
             _champManager.DesignatedObject = characterBase;
-            StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
+            if (_AACoroutine == null) StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
         }
         else
         {
             _champManager.DesignatedObject = null;
-            _AAing = false;
+            if (_AACoroutine != null)
+            {
+                StopCoroutine(_AACoroutine);
+                _AACoroutine = null;
+            }
+            //_AAing = false;
         }
     }
 

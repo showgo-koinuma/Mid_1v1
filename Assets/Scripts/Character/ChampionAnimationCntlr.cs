@@ -18,6 +18,8 @@ public class ChampionAnimationCntlr : MonoBehaviour
 
     public void StartQAnimation() => _animator.SetTrigger("Q");
 
+    public void StartQ3Animation() => _animator.SetTrigger("Q3");
+
     public void SetIsMove(bool isMove)
     {
         _animator.SetBool("IsMove", isMove);

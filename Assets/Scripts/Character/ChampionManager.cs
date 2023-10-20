@@ -39,7 +39,7 @@ public class ChampionManager : CharacterBase
     {
     }
 
-    protected override IEnumerator KnockUp(float sec)
+    public override IEnumerator KnockUp(float sec)
     {
         _playerMove.StopMove();
         _champState = ChampionState.airborne;
@@ -52,6 +52,7 @@ public enum ChampionState
 {
     Idle,
     Moving,
+    AAing,
     channeling,
     airborne,
     dead

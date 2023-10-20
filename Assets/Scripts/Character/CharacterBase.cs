@@ -48,7 +48,7 @@ public abstract class CharacterBase : MonoBehaviour
 
     /// <summary>キャラをノックアップさせる(秒)</summary>
     /// <param name="sec"></param>
-    protected abstract IEnumerator KnockUp(float sec);
+    public abstract IEnumerator KnockUp(float sec);
 
     /// <summary>charaが死んだとき</summary>
     protected abstract void DeadCharacter();
