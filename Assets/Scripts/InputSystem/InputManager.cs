@@ -164,18 +164,23 @@ public class InputManager : MonoBehaviour
         }
         _getCursorOnHit = null;
     }
+
+    void koo()
+    {
+        
+    }
 }
 
-public enum InputType
-{
-    RightClick,
-    Q,
-    W,
-    E,
-    R,
-    Space,
-    F,
-    D,
-    S,
-    ESC
-}
+//public enum InputType
+//{
+//    RightClick,
+//    Q,
+//    W,
+//    E,
+//    R,
+//    Space,
+//    F,
+//    D,
+//    S,
+//    ESC
+//}

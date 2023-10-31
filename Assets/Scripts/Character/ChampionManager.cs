@@ -17,7 +17,7 @@ public class ChampionManager : CharacterBase
 
     /// <summary>Range内かチェック</summary>
     /// <param name="target"></param>
-    public IEnumerator TargetDesignationCheck(int Range, Action action)
+    public IEnumerator TargetDesignationCheck(float Range, Action action)
     {
         if (!_designatedObject) yield break;
         if (Range * 0.02f < (_designatedObject.This2DPos() - this.This2DPos()).magnitude) // Range外
