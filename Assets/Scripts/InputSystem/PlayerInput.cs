@@ -43,11 +43,11 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        _updateAction.Invoke();
         var ray = Camera.main.ScreenPointToRay(_mousePos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _blueLayerMask)) _hitBlue = hit; // blue‚Ìhitî•ñ
         // TODO:red‚Ì‚â‚Â‘‚­‚©
+        _updateAction.Invoke();
     }
 
     /// <summary>‰Šú‰»ˆ—‚ğs‚¤</summary>
@@ -69,7 +69,6 @@ public class PlayerInput : MonoBehaviour
     void OnMoveMouse(InputAction.CallbackContext context)
     {
         _mousePos = context.ReadValue<Vector2>();
-        Debug.Log("koko");
     }
     void OnRightClick(InputAction.CallbackContext context)
     {

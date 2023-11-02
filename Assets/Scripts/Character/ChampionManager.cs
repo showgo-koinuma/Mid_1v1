@@ -8,7 +8,15 @@ public class ChampionManager : CharacterBase
     public ChampionAnimationCntlr ChampAnimContlr { get => _champAnimContlr; }
     PlayerMove _playerMove;
     ChampionState _champState = ChampionState.Idle;
-    public ChampionState ChampState { get => _champState; set => _champState = value; }
+    public ChampionState ChampState
+    { 
+        get => _champState;
+        set
+        {
+            if (_champState == ChampionState.airborne) return; // ノックアップ中はState変更できない
+            _champState = value;
+        }
+    }
 
     private void Awake()
     {

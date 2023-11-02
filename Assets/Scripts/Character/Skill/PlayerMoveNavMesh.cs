@@ -19,31 +19,33 @@ public class PlayerMoveNavMesh : MonoBehaviour
 
     void Move()
     {
-        Vector3 dir = _agent.steeringTarget - transform.position;
+        if (_champManager.ChampState == ChampionState.channeling || _champManager.ChampState == ChampionState.airborne) return; // 動けないStateはreturn
+
+        Vector3 dir = _agent.steeringTarget - transform.position; // 目的地の中継地点までの向き
         dir.y = 0;
         _agent.velocity = dir.normalized * _movementSpeed;
         SetForward();
-        _champAnimContlr.SetSpeed(_agent.velocity.magnitude);
+        _champAnimContlr.SetSpeed(_agent.velocity.magnitude); // animation用speedセット
+
+        if (_agent.velocity.magnitude != 0) _champManager.ChampState = ChampionState.Moving; // Stateセット
+        else _champManager.ChampState = ChampionState.Idle;
     }
 
     void SetForward()
     {
-        if (_agent.velocity.magnitude == 0) return;
-        Quaternion targetRotation = Quaternion.LookRotation(_agent.velocity.normalized);
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * _turnSpeed);  // Slerp を使うのがポイント
+        if (_agent.velocity.magnitude == 0) return; // 動いてなければ無回転
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_agent.velocity.normalized), Time.deltaTime * _turnSpeed); // スムーズに回転
     }
 
     /// <summary>目的地のセット</summary>
     void SetDestination()
     {
         _agent.destination = PlayerInput.Instance.MouseHitBlue.point; // ターゲットの設定
-        _champManager.ChampState = ChampionState.Moving;
     }
     /// <summary>対象指定、Stop用目的地のセット</summary>
     void SetDestination(Vector3 destination)
     {
         _agent.destination = destination; // ターゲットの設定
-        _champManager.ChampState = ChampionState.Moving;
         if (destination - this.transform.position != Vector3.zero) this.transform.rotation = Quaternion.LookRotation(destination - this.transform.position);
     }
 
