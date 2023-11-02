@@ -11,7 +11,7 @@ public class PlayerMoveNavMesh : MonoBehaviour
     private void Awake()
     {
         _champManager = GetComponent<ChampionManager>();
-        _movementSpeed = _champManager.CharaParam.MS;
+        _movementSpeed = _champManager.CharaParam.MS * 0.02f;
         _agent = GetComponent<NavMeshAgent>();
     }
 
@@ -19,14 +19,13 @@ public class PlayerMoveNavMesh : MonoBehaviour
     {
         Vector3 dir = _agent.steeringTarget - transform.position;
         dir.y = 0;
-        _agent.velocity = dir.normalized * 10;
+        _agent.velocity = dir.normalized * _movementSpeed;
     }
 
     void SetMovePos()
     {
         _posToMove = PlayerInput.Instance.MouseHitBlue.point;
         _agent.destination = _posToMove; // ターゲットの設定
-        Debug.Log(_posToMove);
     }
 
     private void OnEnable()
