@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using DG.Tweening;
 
-public class MinionController : CharacterBase
+public class MinionManager : CharacterBase
 {
     MinionState _minionState = MinionState.Moving;
 
