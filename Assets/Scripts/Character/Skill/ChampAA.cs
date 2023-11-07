@@ -6,7 +6,6 @@ public class ChampAA : MonoBehaviour
     ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
-    //bool _AAing;
     Coroutine _AACoroutine;
 
     private void Awake()
@@ -24,7 +23,6 @@ public class ChampAA : MonoBehaviour
 
     IEnumerator AAing()
     {
-        //_AAing = true;
         _animationCntlr.StartAAAnimation();
         yield return new WaitForSeconds(1);
         if (_AACoroutine != null) _AACoroutine = StartCoroutine(AAing());
@@ -47,12 +45,12 @@ public class ChampAA : MonoBehaviour
         else
         {
             _champManager.DesignatedObject = null;
+
             if (_AACoroutine != null)
             {
                 StopCoroutine(_AACoroutine);
                 _AACoroutine = null;
             }
-            //_AAing = false;
         }
     }
 

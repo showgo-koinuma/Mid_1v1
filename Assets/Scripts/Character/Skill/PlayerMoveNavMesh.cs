@@ -12,7 +12,7 @@ public class PlayerMoveNavMesh : MonoBehaviour
     private void Awake()
     {
         _champManager = GetComponent<ChampionManager>();
-        _champAnimContlr = GetComponentInChildren<ChampionAnimationCntlr>();
+        _champAnimContlr = _champManager.ChampAnimContlr;
         _agent = GetComponent<NavMeshAgent>();
         _movementSpeed = _champManager.CharaParam.MS * 0.02f;
     }
@@ -24,35 +24,39 @@ public class PlayerMoveNavMesh : MonoBehaviour
         Vector3 dir = _agent.steeringTarget - transform.position; // 目的地の中継地点までの向き
         dir.y = 0;
         _agent.velocity = dir.normalized * _movementSpeed;
-        SetForward();
         _champAnimContlr.SetSpeed(_agent.velocity.magnitude); // animation用speedセット
 
         if (_agent.velocity.magnitude != 0) _champManager.ChampState = ChampionState.Moving; // Stateセット
         else _champManager.ChampState = ChampionState.Idle;
+        SetForward();
     }
 
     void SetForward()
     {
-        if (_agent.velocity.magnitude == 0) return; // 動いてなければ無回転
+        if (_champManager.ChampState != ChampionState.Moving) return; // 動いてなければ無回転
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_agent.velocity.normalized), Time.deltaTime * _turnSpeed); // スムーズに回転
+    }
+    public void SetForward(Vector3 dir)
+    {
+        this.transform.rotation = Quaternion.LookRotation(dir);
     }
 
     /// <summary>目的地のセット</summary>
     void SetDestination()
     {
-        _agent.destination = PlayerInput.Instance.MouseHitBlue.point; // ターゲットの設定
+        // hitした対象がCharacterBaseでないなら目的地とする
+        if (!PlayerInput.Instance.MouseHitBlue.collider.TryGetComponent(out CharacterBase characterBase)) _agent.destination = PlayerInput.Instance.MouseHitBlue.point;
     }
-    /// <summary>対象指定、Stop用目的地のセット</summary>
-    void SetDestination(Vector3 destination)
+    /// <summary>対象指定、Stop用の目的地、Forwardのセット</summary>
+    public void SetDestination(Vector3 destination)
     {
-        _agent.destination = destination; // ターゲットの設定
-        if (destination - this.transform.position != Vector3.zero) this.transform.rotation = Quaternion.LookRotation(destination - this.transform.position);
+        _agent.destination = destination;
     }
 
-    void StopMove()
+    public void StopMove()
     {
         _champManager.ChampState = ChampionState.Idle;
-        SetDestination(this.transform.position);
+        _agent.destination = this.transform.position;
     }
 
     private void OnEnable()
