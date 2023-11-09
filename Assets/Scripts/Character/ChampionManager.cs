@@ -14,7 +14,7 @@ public class ChampionManager : CharacterBase
         get => _champState;
         set
         {
-            if (_champState == ChampionState.airborne) return; // ノックアップ中はState変更できない
+            if (_champState == ChampionState.channeling || _champState == ChampionState.airborne || _champState == ChampionState.dead) return; // State変更できないState
             _champState = value;
         }
     }

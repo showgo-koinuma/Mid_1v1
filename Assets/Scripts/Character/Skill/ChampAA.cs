@@ -25,12 +25,13 @@ public class ChampAA : MonoBehaviour
     {
         _animationCntlr.StartAAAnimation();
         yield return new WaitForSeconds(1);
-        if (_AACoroutine != null) _AACoroutine = StartCoroutine(AAing());
+        if (_champManager.ChampState == ChampionState.AAing) _AACoroutine = StartCoroutine(AAing());
     }
 
     void StartAA()
     {
         if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
+        _champManager.ChampState = ChampionState.AAing;
     }
 
     /// <summary>AAのターゲットをセットする</summary>
