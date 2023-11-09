@@ -23,15 +23,18 @@ public class ChampAA : MonoBehaviour
 
     IEnumerator AAing()
     {
-        _animationCntlr.StartAAAnimation();
-        yield return new WaitForSeconds(1);
-        if (_champManager.ChampState == ChampionState.AAing) _AACoroutine = StartCoroutine(AAing());
+        while (_champManager.ChampState == ChampionState.AAing)
+        {
+            _animationCntlr.StartAAAnimation();
+            yield return new WaitForSeconds(1f);
+        }
+        _AACoroutine = null;
     }
 
     void StartAA()
     {
-        if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
         _champManager.ChampState = ChampionState.AAing;
+        if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
     }
 
     /// <summary>AAのターゲットをセットする</summary>
@@ -40,8 +43,12 @@ public class ChampAA : MonoBehaviour
     {
         if (hit.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
         {
-            _champManager.DesignatedObject = characterBase;
-            if (_AACoroutine == null) StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
+            // AA中でない、または違う敵をターゲットにしたら対象指定のコルーチン開始
+            if (_AACoroutine == null || _champManager.DesignatedObject != characterBase)
+            {
+                _champManager.DesignatedObject = characterBase;
+                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
+            }
         }
         else
         {
