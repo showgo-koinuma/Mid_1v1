@@ -66,9 +66,9 @@ public class ChampionManager : CharacterBase
         _champState = ChampionState.Idle;
     }
 
-    public void FinishChanneling()
+    public void FinishChanneling(ChampionState finishState)
     {
-        if (_champState == ChampionState.channeling) _champState = ChampionState.Idle;
+        if (_champState == ChampionState.channeling) _champState = finishState;
     }
 }
 

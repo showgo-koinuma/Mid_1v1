@@ -39,7 +39,7 @@ public class ChampAA : MonoBehaviour
         {
             if (_champManager.ChampState == ChampionState.AAing)
             {
-                _animationCntlr.StartAAAnimation();
+                _animationCntlr.AATrigger();
                 _AATimer = _AATimeRate;
             }
         }
@@ -61,7 +61,7 @@ public class ChampAA : MonoBehaviour
             if (_AACoroutine == null || _champManager.DesignatedObject != characterBase)
             {
                 _champManager.DesignatedObject = characterBase;
-                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, () => _champManager.ChampState = ChampionState.AAing));
+                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, () => { _champManager.ChampState = ChampionState.AAing; }));
             }
         }
         else

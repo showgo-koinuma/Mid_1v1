@@ -16,8 +16,8 @@ public class QController : MonoBehaviour
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
     float _hitOccurrenceDelay = 0.1f;
     /// <summary>Channeling時間</summary>
-    float _channelingTimeQ = 0.5f;
-    float _channelingTimeQ3 = 0.7f;
+    float _channelingTimeQ = 0.3f;
+    float _channelingTimeQ3 = 0.5f;
     int _layerMask = 1 << 10 | 1 << 11 | 1 << 12;
 
     private void Awake()
@@ -43,26 +43,30 @@ public class QController : MonoBehaviour
 
     IEnumerator Qstart()
     {
+        ChampionState currentState = _champManager.ChampState;
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
-        Invoke(nameof(FinishChannelingInvoker), _channelingTimeQ);
-        yield return new WaitForSeconds(_cd); // TODO:UI反映出来なさそう
+        yield return new WaitForSeconds(_channelingTimeQ);
+        _champManager.FinishChanneling(currentState);
+        yield return new WaitForSeconds(_cd - _channelingTimeQ); // TODO:UI反映出来なさそう
         _isCD = false;
     }
 
     IEnumerator Q3start()
     {
+        ChampionState currentState = _champManager.ChampState;
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQ3Animation();
         Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay);
         _stack = 0;
-        Invoke(nameof(FinishChannelingInvoker), _channelingTimeQ3);
-        yield return new WaitForSeconds(_cd - _channelingTimeQ); // TODO:UI反映出来なさそう
+        yield return new WaitForSeconds(_channelingTimeQ3);
+        _champManager.FinishChanneling(currentState);
+        yield return new WaitForSeconds(_cd - _channelingTimeQ3); // TODO:UI反映出来なさそう
         _isCD = false;
     }
 
@@ -90,11 +94,6 @@ public class QController : MonoBehaviour
     {
         GameObject q3obj = Instantiate(_Q3obj, this.transform.position, Quaternion.identity);
         q3obj.GetComponent<TornadoCntlr>().Initialization(_hitPoint, 20 + (int)(_charaParam.AD * 1.05f));
-    }
-
-    void FinishChannelingInvoker()
-    {
-        _champManager.FinishChanneling();
     }
 
     void OnDrawGizmosSelected()

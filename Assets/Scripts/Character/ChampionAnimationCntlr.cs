@@ -16,7 +16,7 @@ public class ChampionAnimationCntlr : MonoBehaviour
 
     public void SetIsMove(bool isMove) => _animator.SetBool("IsMove", isMove);
     public void SetSpeed(float speed) => _animator.SetFloat("Speed", speed);
-    public void StartAAAnimation() => _animator.SetTrigger("AA");
+    public void AATrigger() => _animator.SetTrigger("AA");
     public void StartQAnimation() => _animator.SetTrigger("Q");
     public void StartQ3Animation() => _animator.SetTrigger("Q3");
 

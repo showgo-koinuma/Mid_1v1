@@ -3064,6 +3064,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedMeleeMinion
       objectReference: {fileID: 0}
+    - target: {fileID: 3510679408448165390, guid: 374ccaf3db7ccb24a8767fbc6e33225d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3572477755044970814, guid: 374ccaf3db7ccb24a8767fbc6e33225d, type: 3}
       propertyPath: m_Drag
       value: 0
