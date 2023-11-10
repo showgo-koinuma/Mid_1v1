@@ -10,7 +10,7 @@ public class ChampionAnimationCntlr : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _champManager = transform.parent.gameObject.GetComponent<ChampionManager>();
+        _champManager = GetComponent<ChampionManager>();
         _champAA = _champManager.gameObject.GetComponent<ChampAA>();
     }
 
