@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class QController : MonoBehaviour
 {
     [SerializeField] GameObject _Q3obj;
-    PlayerMove _playerMove;
+    PlayerMoveNavMesh _playerMove;
     ChampionManager _champManager;
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
@@ -15,54 +16,53 @@ public class QController : MonoBehaviour
     /// <summary>アニメーション発生から当たり判定発生までのdelay</summary>
     float _hitOccurrenceDelay = 0.1f;
     /// <summary>Channeling時間</summary>
-    float _channelingTime = 0.5f;
+    float _channelingTimeQ = 0.5f;
+    float _channelingTimeQ3 = 0.7f;
     int _layerMask = 1 << 10 | 1 << 11 | 1 << 12;
 
     private void Awake()
     {
-        _playerMove = GetComponent<PlayerMove>();
+        _playerMove = GetComponent<PlayerMoveNavMesh>();
         _champManager = GetComponent<ChampionManager>();
         _charaParam = _champManager.CharaParam;
         _animationCntlr = _champManager.ChampAnimContlr;
     }
     
-    void Start() => InputManager.Instance.SetEnterRaycastInput(InputType.Q, this.OnQ);
+    void Start() => PlayerInput.Instance.SetInput(InputType.Q, OnQ);
 
-    void OnQ(RaycastHit hit)
+    void OnQ()
     {
         if (!_isCD)
         {
-            _hitPoint = hit.point;
-            if (_stack < 2) StartCoroutine(Qstart(hit));
-            else StartCoroutine(Q3start(hit));
+            _hitPoint = PlayerInput.Instance.MouseHitBlue.point;
+            if (_stack < 2) StartCoroutine(Qstart());
+            else StartCoroutine(Q3start());
             _isCD = true;
         }
     }
 
-    IEnumerator Qstart(RaycastHit hit)
+    IEnumerator Qstart()
     {
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
-        yield return new WaitForSeconds(_channelingTime);
-        if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
-        yield return new WaitForSeconds(_cd - _channelingTime); // TODO:UI反映出来なさそう
+        Invoke(nameof(FinishChannelingInvoker), _channelingTimeQ);
+        yield return new WaitForSeconds(_cd); // TODO:UI反映出来なさそう
         _isCD = false;
     }
 
-    IEnumerator Q3start(RaycastHit hit)
+    IEnumerator Q3start()
     {
         _playerMove.StopMove();
         _champManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQ3Animation();
-        Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay); // nameofで出来ない？
+        Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay);
         _stack = 0;
-        yield return new WaitForSeconds(_channelingTime); // channelingTimeは同じか
-        if (_champManager.ChampState != ChampionState.dead) _champManager.ChampState = ChampionState.Idle;
-        yield return new WaitForSeconds(_cd - _channelingTime); // TODO:UI反映出来なさそう
+        Invoke(nameof(FinishChannelingInvoker), _channelingTimeQ3);
+        yield return new WaitForSeconds(_cd - _channelingTimeQ); // TODO:UI反映出来なさそう
         _isCD = false;
     }
 
@@ -90,6 +90,11 @@ public class QController : MonoBehaviour
     {
         GameObject q3obj = Instantiate(_Q3obj, this.transform.position, Quaternion.identity);
         q3obj.GetComponent<TornadoCntlr>().Initialization(_hitPoint, 20 + (int)(_charaParam.AD * 1.05f));
+    }
+
+    void FinishChannelingInvoker()
+    {
+        _champManager.FinishChanneling();
     }
 
     void OnDrawGizmosSelected()

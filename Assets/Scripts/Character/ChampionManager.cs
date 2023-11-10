@@ -1,11 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using DG.Tweening;
 
 public class ChampionManager : CharacterBase
 {
-    [SerializeField] ChampionAnimationCntlr _champAnimContlr;
-    public ChampionAnimationCntlr ChampAnimContlr { get => _champAnimContlr; }
+    ChampionAnimationCntlr _champAnimContlr;
+    public ChampionAnimationCntlr ChampAnimContlr
+    {
+        get
+        {
+            if (_champAnimContlr == null) return _champAnimContlr = GetComponent<ChampionAnimationCntlr>();
+            else return _champAnimContlr;
+        }
+    }
     //PlayerMove _playerMove;
     PlayerMoveNavMesh _playeMoveNav;
     ChampionState _champState = ChampionState.Idle;
@@ -21,7 +29,6 @@ public class ChampionManager : CharacterBase
 
     private void Awake()
     {
-        //_playerMove = GetComponent<PlayerMove>();
         _playeMoveNav = GetComponent<PlayerMoveNavMesh>();
     }
 
@@ -54,8 +61,14 @@ public class ChampionManager : CharacterBase
     {
         _playeMoveNav.StopMove();
         _champState = ChampionState.airborne;
+        _body.DOJump(_body.position, sec, 1, sec); // knock up 連続で食らったらバグるかも
         yield return new WaitForSeconds(sec);
         _champState = ChampionState.Idle;
+    }
+
+    public void FinishChanneling()
+    {
+        if (_champState == ChampionState.channeling) _champState = ChampionState.Idle;
     }
 }
 

@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 209725038}
   - component: {fileID: 209725040}
   - component: {fileID: 209725039}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +813,8 @@ GameObject:
   - component: {fileID: 522136344}
   - component: {fileID: 522136338}
   - component: {fileID: 522136337}
-  m_Layer: 0
+  - component: {fileID: 522136346}
+  m_Layer: 6
   m_Name: BlueChampion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -978,7 +979,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _charaParam: {fileID: 11400000, guid: b0aa8e561e48ab94da94dbfa8b0d77be, type: 2}
-  _champAnimContlr: {fileID: 522136344}
+  _body: {fileID: 1780599623}
+--- !u!114 &522136346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522136336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb59f197540182468dcd1c81ccd0443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Q3obj: {fileID: 1763247460291199104, guid: 49d99b1a29899004a9f468a783cc9ab0, type: 3}
 --- !u!4 &581598980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400180, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
@@ -1536,6 +1550,11 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 400160, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
   m_PrefabInstance: {fileID: 938501382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1094438312 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 21745341019243292, guid: 374ccaf3db7ccb24a8767fbc6e33225d, type: 3}
+  m_PrefabInstance: {fileID: 7412865942964313033}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1108828940 stripped
 Transform:
@@ -2357,7 +2376,7 @@ GameObject:
   - component: {fileID: 1780599623}
   - component: {fileID: 1780599625}
   - component: {fileID: 1780599624}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2442,7 +2461,7 @@ GameObject:
   - component: {fileID: 1789751430}
   - component: {fileID: 1789751433}
   - component: {fileID: 1789751432}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2803,6 +2822,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword_01
       objectReference: {fileID: 0}
+    - target: {fileID: 355312524381552382, guid: b84d7ca3927758646a65731cc107aa76, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1127450730860520516, guid: b84d7ca3927758646a65731cc107aa76, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2900,6 +2923,10 @@ PrefabInstance:
       propertyPath: _clickEffectObj
       value: 
       objectReference: {fileID: 2608211711081136085, guid: 519f8199e30ca6840a7686dc5b9890ba, type: 3}
+    - target: {fileID: 4342013019322013778, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
+      propertyPath: _champAnimContlr
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4435679222751291934, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2969,6 +2996,7 @@ PrefabInstance:
     - {fileID: 2329776357185738448, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
     - {fileID: 7197270701911930802, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
     - {fileID: 3709759340683315592, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
+    - {fileID: 6955376957171086971, guid: 5dd6de3e742329e4baea16963f512a18, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -3024,6 +3052,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 124503836408048549, guid: 374ccaf3db7ccb24a8767fbc6e33225d, type: 3}
+      propertyPath: _body
+      value: 
+      objectReference: {fileID: 1094438312}
     - target: {fileID: 895287523618253353, guid: 374ccaf3db7ccb24a8767fbc6e33225d, type: 3}
       propertyPath: m_Enabled
       value: 1

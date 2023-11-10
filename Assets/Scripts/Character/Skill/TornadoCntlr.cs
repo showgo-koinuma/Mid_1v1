@@ -4,6 +4,7 @@ using DG.Tweening;
 public class TornadoCntlr : MonoBehaviour
 {
     [SerializeField, Tooltip("range到達までの時間(dotweenだから)")] float _time = 1.5f;
+    [SerializeField, Tooltip("KnockUp時間")] float _knockUpTime = 1;
     int _damage;
 
     /// <summary>方向をセットして飛ばす</summary>
@@ -21,7 +22,7 @@ public class TornadoCntlr : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out CharacterBase characterBase))
         {
-            StartCoroutine(characterBase.KnockUp(1));
+            StartCoroutine(characterBase.KnockUp(_knockUpTime));
             characterBase.DealDamage(_damage, DamageType.AD, characterBase);
         }
     }

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class ChampAA : MonoBehaviour
@@ -23,15 +22,15 @@ public class ChampAA : MonoBehaviour
         _champManager.DealDamage((int)_charaParam.AD, DamageType.AD, _champManager.DesignatedObject);
     }
 
-    IEnumerator AAing()
-    {
-        while (_champManager.ChampState == ChampionState.AAing)
-        {
-            _animationCntlr.StartAAAnimation();
-            yield return new WaitForSeconds(1f);
-        }
-        _AACoroutine = null;
-    }
+    //IEnumerator AAing()
+    //{
+    //    while (_champManager.ChampState == ChampionState.AAing)
+    //    {
+    //        _animationCntlr.StartAAAnimation();
+    //        yield return new WaitForSeconds(1f);
+    //    }
+    //    _AACoroutine = null;
+    //}
 
     void AATimer()
     {
@@ -46,11 +45,11 @@ public class ChampAA : MonoBehaviour
         }
     }
 
-    void StartAA()
-    {
-        _champManager.ChampState = ChampionState.AAing;
-        //if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
-    }
+    //void StartAA()
+    //{
+    //    _champManager.ChampState = ChampionState.AAing;
+    //    //if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
+    //}
 
     /// <summary>AAのターゲットをセットする</summary>
     /// <param name="hit"></param>

@@ -12,8 +12,9 @@ public class MinionManager : CharacterBase
 
     public override IEnumerator KnockUp(float sec)
     {
+        // TO:DO ~‚Ü‚éˆ—
         _minionState = MinionState.airborne;
-        this.transform.DOJump(this.transform.position, sec, 1, sec);
+        _body.DOJump(_body.position, sec, 1, sec); // minion‚Ìanimation‚ğg‚¤ê‡•ÏX•K{
         yield return new WaitForSeconds(sec);
         _minionState = MinionState.Moving;
     }

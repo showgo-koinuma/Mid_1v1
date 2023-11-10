@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class CharacterBase : MonoBehaviour
 {
-    [SerializeField] private CharacterParameter _charaParam;
+    [SerializeField] CharacterParameter _charaParam;
+    [SerializeField, Tooltip("Œ©‚½–Ú‚¾‚¯•‚‚©‚¹‚éKnockUp—p")] protected Transform _body;
     public CharacterParameter CharaParam { get => _charaParam; }
     protected CharacterBase _designatedObject;
     public CharacterBase DesignatedObject { get => _designatedObject;  set => _designatedObject = value; }
