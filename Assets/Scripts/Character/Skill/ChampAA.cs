@@ -7,6 +7,8 @@ public class ChampAA : MonoBehaviour
     CharacterParameter _charaParam;
     ChampionAnimationCntlr _animationCntlr;
     Coroutine _AACoroutine;
+    float _AATimeRate = 1;
+    float _AATimer = 0;
 
     private void Awake()
     {
@@ -31,23 +33,36 @@ public class ChampAA : MonoBehaviour
         _AACoroutine = null;
     }
 
+    void AATimer()
+    {
+        if (_AATimer > 0) _AATimer -= Time.deltaTime;
+        else
+        {
+            if (_champManager.ChampState == ChampionState.AAing)
+            {
+                _animationCntlr.StartAAAnimation();
+                _AATimer = _AATimeRate;
+            }
+        }
+    }
+
     void StartAA()
     {
         _champManager.ChampState = ChampionState.AAing;
-        if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
+        //if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
     }
 
     /// <summary>AAのターゲットをセットする</summary>
     /// <param name="hit"></param>
-    void AATargetSet(RaycastHit hit)
+    void AATargetSet()
     {
-        if (hit.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
+        if (PlayerInput.Instance.MouseHitBlue.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
         {
             // AA中でない、または違う敵をターゲットにしたら対象指定のコルーチン開始
             if (_AACoroutine == null || _champManager.DesignatedObject != characterBase)
             {
                 _champManager.DesignatedObject = characterBase;
-                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, StartAA));
+                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, () => _champManager.ChampState = ChampionState.AAing));
             }
         }
         else
@@ -62,5 +77,9 @@ public class ChampAA : MonoBehaviour
         }
     }
 
-    private void Start() => InputManager.Instance.SetEnterRaycastInput(InputType.RightClick, this.AATargetSet);
+    private void Start()
+    {
+        InGameManager.Instance.SetUpdateAction(AATimer);
+        PlayerInput.Instance.SetInput(InputType.RightClick, this.AATargetSet);
+    }
 }
