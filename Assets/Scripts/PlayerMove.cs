@@ -1,5 +1,5 @@
 using UnityEngine;
-
+#if false
 /// <summary>プレイヤーを動かすコンポーネント</summary>
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMove : MonoBehaviour
@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
     /// <summary>クリックしたposをセット</summary>
     void SetMovePos(RaycastHit hit)
     {
-        if (!hit.collider.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
+        if (!hit.collider.TryGetComponent(out CharacterManagerBase characterBase)) // AA出来るobjか判定
         {
             _posToMove = hit.point;
             _moveDirection = _posToMove - this.transform.position;
@@ -73,7 +73,7 @@ public class PlayerMove : MonoBehaviour
     
     /// <summary>対象指定用 指定したobjに向かって移動</summary>
     /// <param name="target"></param>
-    public void MoveToDesignatTarget(CharacterBase target)
+    public void MoveToDesignatTarget(CharacterManagerBase target)
     {
         _posToMove = target.gameObject.transform.position;
         _moveDirection = _posToMove - this.transform.position;
@@ -99,3 +99,4 @@ public class PlayerMove : MonoBehaviour
         }
     }
 }
+#endif

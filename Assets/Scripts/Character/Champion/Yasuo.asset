@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eec9aed5298f074dbd7b8a09cf3cbaf, type: 3}
   m_Name: Yasuo
   m_EditorClassIdentifier: 
+  _sideIsBlue: 1
   _maxHp: 590
   _ad: 60
   _ap: 0

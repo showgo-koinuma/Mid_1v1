@@ -1,24 +1,14 @@
-using UnityEngine;
-using System.Collections;
-using System;
 using DG.Tweening;
+using System;
+using System.Collections;
+using UnityEngine;
 
-public class ChampionManager : CharacterBase
+public class ChampionMoveManager : CharacterMoveManager
 {
-    ChampionAnimationCntlr _champAnimContlr;
-    public ChampionAnimationCntlr ChampAnimContlr
-    {
-        get
-        {
-            if (_champAnimContlr == null) return _champAnimContlr = GetComponent<ChampionAnimationCntlr>();
-            else return _champAnimContlr;
-        }
-    }
-    //PlayerMove _playerMove;
     PlayerMoveNavMesh _playeMoveNav;
     ChampionState _champState = ChampionState.Idle;
     public ChampionState ChampState
-    { 
+    {
         get => _champState;
         set
         {
@@ -37,7 +27,7 @@ public class ChampionManager : CharacterBase
     public IEnumerator TargetDesignationCheck(float Range, Action action)
     {
         if (!_designatedObject) yield break;
-        if (Range * 0.02f < (_designatedObject.This2DPos() - this.This2DPos()).magnitude) // RangeŠO
+        if (Range * 0.02f < (_designatedObject.MoveManager.This2DPos() - this.This2DPos()).magnitude) // RangeŠO
         {
             _playeMoveNav.SetDestination(_designatedObject.transform.position);
             yield return null;
@@ -51,10 +41,6 @@ public class ChampionManager : CharacterBase
             action?.Invoke();
             yield break;
         }
-    }
-
-    protected override void DeadCharacter()
-    {
     }
 
     public override IEnumerator KnockUp(float sec)

@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>キャラクターのパラメータ</summary>
 public class CharacterParameter : ScriptableObject
 {
+    [SerializeField] bool _sideIsBlue;
     [SerializeField] int _maxHp;
     [SerializeField] float _ad;
     [SerializeField] float _ap;
@@ -15,6 +16,7 @@ public class CharacterParameter : ScriptableObject
     [SerializeField] int _range;
     float _hp;
 
+    public bool SideIsBlue { get => _sideIsBlue; }
     public int MaxHP { get => _maxHp; set => _maxHp = value; }
     public float CurrentHP
     {
@@ -38,26 +40,4 @@ public class CharacterParameter : ScriptableObject
     /// <summary>Dead時に呼ばれる</summary>
     public event Action DeadAction = default;
     public event Action HpUpdate = default;
-
-    /// <summary>パラメータコンストラクタ</summary>
-    /// <param name="data"></param>
-    //public CharacterParameter(CharaParamData data)
-    //{
-    //    _maxHp = data.HP;
-    //    _hp = data.HP;
-    //    _ad = data.AD;
-    //    _ap = data.AP;
-    //    _ar = data.AR;
-    //    _mr = data.MR;
-    //    _as = data.AS;
-    //    _ms = data.MS;
-    //    _range = data.Range;
-    //}
-}
-
-[Serializable]
-public struct CharaParamData
-{
-    public int HP, AD, AP, AR, MR, MS, Range;
-    public float AS;
 }

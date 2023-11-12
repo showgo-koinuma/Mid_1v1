@@ -8,7 +8,7 @@ public class CharaUIContlr : MonoBehaviour
 
     private void Awake()
     {
-        _charaParam = GetComponent<CharacterBase>().CharaParam;
+        _charaParam = GetComponent<CharacterManagerBase>().CharaParam;
         Initialization();
     }
 

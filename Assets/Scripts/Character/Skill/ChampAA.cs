@@ -4,6 +4,7 @@ public class ChampAA : MonoBehaviour
 {
     ChampionManager _champManager;
     CharacterParameter _charaParam;
+    ChampionMoveManager _moveManager;
     ChampionAnimationCntlr _animationCntlr;
     Coroutine _AACoroutine;
     float _AATimeRate = 1;
@@ -13,31 +14,22 @@ public class ChampAA : MonoBehaviour
     {
         _champManager = GetComponent<ChampionManager>();
         _charaParam = _champManager.CharaParam;
+        _moveManager = GetComponent<ChampionMoveManager>();
         _animationCntlr = _champManager.ChampAnimContlr;
     }
 
     /// <summary>animatin event AAヒット効果</summary>
     public void AA()
     {
-        _champManager.DealDamage((int)_charaParam.AD, DamageType.AD, _champManager.DesignatedObject);
+        _champManager.DealDamage((int)_charaParam.AD, DamageType.AD, _moveManager.DesignatedObject);
     }
-
-    //IEnumerator AAing()
-    //{
-    //    while (_champManager.ChampState == ChampionState.AAing)
-    //    {
-    //        _animationCntlr.StartAAAnimation();
-    //        yield return new WaitForSeconds(1f);
-    //    }
-    //    _AACoroutine = null;
-    //}
 
     void AATimer()
     {
         if (_AATimer > 0) _AATimer -= Time.deltaTime;
         else
         {
-            if (_champManager.ChampState == ChampionState.AAing)
+            if (_moveManager.ChampState == ChampionState.AAing)
             {
                 _animationCntlr.AATrigger();
                 _AATimer = _AATimeRate;
@@ -45,28 +37,22 @@ public class ChampAA : MonoBehaviour
         }
     }
 
-    //void StartAA()
-    //{
-    //    _champManager.ChampState = ChampionState.AAing;
-    //    //if (_AACoroutine == null) _AACoroutine = StartCoroutine(AAing());
-    //}
-
     /// <summary>AAのターゲットをセットする</summary>
     /// <param name="hit"></param>
     void AATargetSet()
     {
-        if (PlayerInput.Instance.MouseHitBlue.collider.gameObject.TryGetComponent(out CharacterBase characterBase)) // AA出来るobjか判定
+        if (PlayerInput.Instance.MouseHitBlue.collider.gameObject.TryGetComponent(out CharacterManagerBase characterBase)) // AA出来るobjか判定
         {
             // AA中でない、または違う敵をターゲットにしたら対象指定のコルーチン開始
-            if (_AACoroutine == null || _champManager.DesignatedObject != characterBase)
+            if (_AACoroutine == null || _moveManager.DesignatedObject != characterBase)
             {
-                _champManager.DesignatedObject = characterBase;
-                StartCoroutine(_champManager.TargetDesignationCheck(_charaParam.Range, () => { _champManager.ChampState = ChampionState.AAing; }));
+                _moveManager.DesignatedObject = characterBase;
+                StartCoroutine(_moveManager.TargetDesignationCheck(_charaParam.Range, () => { _moveManager.ChampState = ChampionState.AAing; }));
             }
         }
         else
         {
-            _champManager.DesignatedObject = null;
+            _moveManager.DesignatedObject = null;
 
             if (_AACoroutine != null)
             {

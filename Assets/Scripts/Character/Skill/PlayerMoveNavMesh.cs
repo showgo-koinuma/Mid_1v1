@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class PlayerMoveNavMesh : MonoBehaviour
 {
-    ChampionManager _champManager;
+    ChampionMoveManager _moveManager;
     ChampionAnimationCntlr _champAnimContlr;
     NavMeshAgent _agent;
     Vector3 _destination;
@@ -12,15 +12,16 @@ public class PlayerMoveNavMesh : MonoBehaviour
 
     private void Awake()
     {
-        _champManager = GetComponent<ChampionManager>();
-        _champAnimContlr = _champManager.ChampAnimContlr;
+        ChampionManager champManager = GetComponent<ChampionManager>();
+        _moveManager = GetComponent<ChampionMoveManager>();
+        _champAnimContlr = champManager.ChampAnimContlr;
         _agent = GetComponent<NavMeshAgent>();
-        _movementSpeed = _champManager.CharaParam.MS * 0.02f;
+        _movementSpeed = champManager.CharaParam.MS * 0.02f;
     }
 
     void Move()
     {
-        if (_champManager.ChampState != ChampionState.Moving) return;
+        if (_moveManager.ChampState != ChampionState.Moving) return;
 
         _agent.SetDestination(_destination);
         Vector3 dir = _agent.steeringTarget - transform.position; // 目的地の中継地点までの向き
@@ -43,21 +44,21 @@ public class PlayerMoveNavMesh : MonoBehaviour
     void SetDestination()
     {
         // hitした対象がCharacterBaseでないなら目的地とする
-        if (PlayerInput.Instance.MouseHitBlue.collider.TryGetComponent(out CharacterBase characterBase)) return;
+        if (PlayerInput.Instance.MouseHitBlue.collider.TryGetComponent(out CharacterManagerBase characterBase)) return;
         _destination = PlayerInput.Instance.MouseHitBlue.point;
-        _champManager.ChampState = ChampionState.Moving;
+        _moveManager.ChampState = ChampionState.Moving;
     }
     /// <summary>対象指定、Stop用の目的地、Forwardのセット</summary>
     public void SetDestination(Vector3 destination)
     {
         Vector3 nearDistination = destination + (transform.position - destination).normalized * 1.2f;
         _destination = nearDistination;
-        _champManager.ChampState = ChampionState.Moving;
+        _moveManager.ChampState = ChampionState.Moving;
     }
 
     public void StopMove()
     {
-        _champManager.ChampState = ChampionState.Idle;
+        _moveManager.ChampState = ChampionState.Idle;
         _agent.velocity = Vector3.zero;
         _agent.ResetPath();
     }

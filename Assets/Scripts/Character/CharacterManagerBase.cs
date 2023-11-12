@@ -1,23 +1,19 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-public abstract class CharacterBase : MonoBehaviour
+public abstract class CharacterManagerBase : MonoBehaviour
 {
     [SerializeField] CharacterParameter _charaParam;
-    [SerializeField, Tooltip("見た目だけ浮かせるKnockUp用")] protected Transform _body;
     public CharacterParameter CharaParam { get => _charaParam; }
-    protected CharacterBase _designatedObject;
-    public CharacterBase DesignatedObject { get => _designatedObject;  set => _designatedObject = value; }
-    /// <summary>Awakeのタイミングで実行したい処理を書く</summary>
-    public virtual void AwakeFunction() { }
+    CharacterMoveManager _moveManager;
+    public CharacterMoveManager MoveManager { get => _moveManager; }
     /// <summary>yasuoP用</summary>
     protected event Action OnTakeDamage = null;
 
     private void Awake()
     {
         Initialization();
-        AwakeFunction();
+        _moveManager = GetComponent<CharacterMoveManager>();
     }
 
     /// <summary>パラメータ初期化</summary>
@@ -28,28 +24,28 @@ public abstract class CharacterBase : MonoBehaviour
 
     /// <summary>ダメージを与える</summary>
     /// <param name="damage"></param><param name="takenDMChara"></param>
-    public void DealDamage(int damage, DamageType damageType, CharacterBase target)
+    public void DealDamage(int damage, DamageType damageType, CharacterManagerBase target)
     {
-        target?.TakeDamage(damage, damageType);
+        target?.TakeDamage(damage, damageType, this);
     }
 
     /// <summary>ダメージを受ける</summary>
     /// <param name="damage"></param>
-    protected void TakeDamage(int damage, DamageType damageType)
+    protected void TakeDamage(int damage, DamageType damageType, CharacterManagerBase dealer)
     {
         OnTakeDamage?.Invoke();
+        if (dealer.gameObject.TryGetComponent(out ChampionManager Cmanager)) WhenTakeDamageFormChampion(Cmanager);
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
         Debug.Log(this.gameObject.name + "に" + DamageCalculation.Damage(damage, damageType, _charaParam) + "の" + damageType.ToString() + "ダメージ");
     }
 
-    public Vector2 This2DPos()
+    /// <summary>HPに更新があったときの処理</summary>
+    void OnHPUpdate() // 
     {
-        return new Vector2(this.transform.position.x, this.transform.position.z);
     }
 
-    /// <summary>キャラをノックアップさせる(秒)</summary>
-    /// <param name="sec"></param>
-    public abstract IEnumerator KnockUp(float sec);
+    /// <summary>チャンピオンからダメージを受けたときの処理</summary>
+    protected abstract void WhenTakeDamageFormChampion(ChampionManager Cmanager);
 
     /// <summary>charaが死んだとき</summary>
     protected abstract void DeadCharacter();

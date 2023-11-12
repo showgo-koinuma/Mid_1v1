@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+/// <summary>チャンピオンのパラメータ</summary>
 [CreateAssetMenu(menuName = "Param/ChampionParameter")]
 public class ChampionParameter : CharacterParameter
 {
@@ -40,6 +42,8 @@ public class ChampionParameter : CharacterParameter
             if (_passiveGauge >= 100) { _passiveGauge = 100; }
         }
     }
+    /// <summary>ステータスに更新があったとき</summary> Lvupとアイテム更新のときかな
+    public event Action _onStatusUpdateAction;
 
     /// <summary>レベルアップによるステータス更新</summary>
     void StatusUpdateOnLvUp()

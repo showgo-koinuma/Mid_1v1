@@ -20,9 +20,9 @@ public class TornadoCntlr : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out CharacterBase characterBase))
+        if (other.gameObject.TryGetComponent(out CharacterManagerBase characterBase))
         {
-            StartCoroutine(characterBase.KnockUp(_knockUpTime));
+            StartCoroutine(characterBase.MoveManager.KnockUp(_knockUpTime));
             characterBase.DealDamage(_damage, DamageType.AD, characterBase);
         }
     }

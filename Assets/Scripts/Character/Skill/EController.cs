@@ -3,9 +3,9 @@ using DG.Tweening;
 
 public class EController : MonoBehaviour
 {
-    PlayerMove _playerMove;
     ChampionManager _champManager;
     CharacterParameter _charaParam;
+    ChampionMoveManager _moveManager;
     ChampionAnimationCntlr _animationCntlr;
     float _cd = 1;
     bool _isCD = false;
@@ -15,9 +15,9 @@ public class EController : MonoBehaviour
 
     private void Awake()
     {
-        _playerMove = GetComponent<PlayerMove>();
         _champManager = GetComponent<ChampionManager>();
         _charaParam = _champManager.CharaParam;
+        _moveManager = GetComponent<ChampionMoveManager>();
         _animationCntlr = _champManager.ChampAnimContlr;
     }
 
@@ -25,10 +25,10 @@ public class EController : MonoBehaviour
 
     void OnE(RaycastHit hit)
     {
-        if (!_isCD && hit.collider.gameObject.TryGetComponent(out CharacterBase characterBase))
+        if (!_isCD && hit.collider.gameObject.TryGetComponent(out CharacterManagerBase characterBase))
         {
-            _champManager.DesignatedObject = characterBase;
-            _champManager.TargetDesignationCheck(9.5f, StartE);
+            _moveManager.DesignatedObject = characterBase;
+            _moveManager.TargetDesignationCheck(9.5f, StartE);
         }
     }
 

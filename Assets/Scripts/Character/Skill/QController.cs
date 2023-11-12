@@ -8,6 +8,7 @@ public class QController : MonoBehaviour
     PlayerMoveNavMesh _playerMove;
     ChampionManager _champManager;
     CharacterParameter _charaParam;
+    ChampionMoveManager _moveManager;
     ChampionAnimationCntlr _animationCntlr;
     float _cd = 1;
     bool _isCD = false;
@@ -25,6 +26,7 @@ public class QController : MonoBehaviour
         _playerMove = GetComponent<PlayerMoveNavMesh>();
         _champManager = GetComponent<ChampionManager>();
         _charaParam = _champManager.CharaParam;
+        _moveManager = GetComponent<ChampionMoveManager>();
         _animationCntlr = _champManager.ChampAnimContlr;
     }
     
@@ -43,29 +45,29 @@ public class QController : MonoBehaviour
 
     IEnumerator Qstart()
     {
-        ChampionState currentState = _champManager.ChampState;
+        ChampionState currentState = _moveManager.ChampState;
         _playerMove.StopMove();
-        _champManager.ChampState = ChampionState.channeling;
+        _moveManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQAnimation();
         Invoke(nameof(QOccurrenceJudg), _hitOccurrenceDelay);
         yield return new WaitForSeconds(_channelingTimeQ);
-        _champManager.FinishChanneling(currentState);
+        _moveManager.FinishChanneling(currentState);
         yield return new WaitForSeconds(_cd - _channelingTimeQ); // TODO:UIîΩâfèoóàÇ»Ç≥ÇªÇ§
         _isCD = false;
     }
 
     IEnumerator Q3start()
     {
-        ChampionState currentState = _champManager.ChampState;
+        ChampionState currentState = _moveManager.ChampState;
         _playerMove.StopMove();
-        _champManager.ChampState = ChampionState.channeling;
+        _moveManager.ChampState = ChampionState.channeling;
         _playerMove.SetForward(_hitPoint - this.transform.position);
         _animationCntlr.StartQ3Animation();
         Invoke(nameof(Q3OccurrenceJudg), _hitOccurrenceDelay);
         _stack = 0;
         yield return new WaitForSeconds(_channelingTimeQ3);
-        _champManager.FinishChanneling(currentState);
+        _moveManager.FinishChanneling(currentState);
         yield return new WaitForSeconds(_cd - _channelingTimeQ3); // TODO:UIîΩâfèoóàÇ»Ç≥ÇªÇ§
         _isCD = false;
     }
@@ -79,7 +81,7 @@ public class QController : MonoBehaviour
 
         foreach (var hitObject in hitObjects)
         {
-            if (hitObject.TryGetComponent(out CharacterBase characterBase))
+            if (hitObject.TryGetComponent(out CharacterManagerBase characterBase))
             {
                 _champManager.DealDamage(damage, DamageType.AD, characterBase);
                 isHit = true;
