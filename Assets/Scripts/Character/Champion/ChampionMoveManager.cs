@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>ƒ`ƒƒƒ“ƒsƒIƒ“‚Ì“®‚«‚ğŠÇ—‚·‚é </summary>
 public class ChampionMoveManager : CharacterMoveManager
 {
     PlayerMoveNavMesh _playeMoveNav;
