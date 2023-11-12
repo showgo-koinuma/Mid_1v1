@@ -34,8 +34,8 @@ public abstract class CharacterManagerBase : MonoBehaviour
     protected void TakeDamage(int damage, DamageType damageType, CharacterManagerBase dealer)
     {
         OnTakeDamage?.Invoke();
-        if (dealer.gameObject.TryGetComponent(out ChampionManager Cmanager)) WhenTakeDamageFormChampion(Cmanager);
         _charaParam.CurrentHP -= DamageCalculation.Damage(damage, damageType, _charaParam);
+        if (dealer.gameObject.TryGetComponent(out ChampionManager Cmanager)) WhenTakeDamageFormChampion(Cmanager);
         Debug.Log(this.gameObject.name + "Ç…" + DamageCalculation.Damage(damage, damageType, _charaParam) + "ÇÃ" + damageType.ToString() + "É_ÉÅÅ[ÉW");
     }
 

@@ -1,4 +1,4 @@
-
+using UnityEngine;
 
 public class ChampionManager : CharacterManagerBase
 {
@@ -12,9 +12,24 @@ public class ChampionManager : CharacterManagerBase
         }
     }
 
+    /// <summary>csをとったとき/summary> // 引数にgoldが必要かも
+    public void GetCS()
+    {
+        if (this.CharaParam.SideIsBlue) InGameManager.Instance.CsBlue++;
+        //else ; redのとき
+        Debug.Log("get cs");
+    }
+
+    /// <summary>expを取得</summary>
+    /// <param name="expValue"></param>
+    public void GetExp(int expValue)
+    {
+        // 範囲にするか絶対取得にするか
+    }
+
     protected override void WhenTakeDamageFormChampion(ChampionManager Cmanager)
     {
-
+        // タワーのターゲットとか？
     }
 
     protected override void DeadCharacter()

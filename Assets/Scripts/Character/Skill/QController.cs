@@ -95,7 +95,7 @@ public class QController : MonoBehaviour
     void Q3OccurrenceJudg()
     {
         GameObject q3obj = Instantiate(_Q3obj, this.transform.position, Quaternion.identity);
-        q3obj.GetComponent<TornadoCntlr>().Initialization(_hitPoint, 20 + (int)(_charaParam.AD * 1.05f));
+        q3obj.GetComponent<TornadoCntlr>().Initialization(_hitPoint, 20 + (int)(_charaParam.AD * 1.05f), _champManager);
     }
 
     void OnDrawGizmosSelected()

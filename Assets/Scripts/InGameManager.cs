@@ -12,10 +12,13 @@ public class InGameManager : MonoBehaviour
     [SerializeField, Tooltip("Kill差数勝利条件")] int _killFinishCount = 3;
     //時間での終了条件
 
+    // game時間
     float _gameTime = 0;
     public float GameTime { get => _gameTime; }
+    // CS
     int _csBlue = 0;
-    public int CsBlue { set { _csBlue = value; if (_csBlue >= _csFinishCount) FinishGame(true); } }
+    public int CsBlue { get => _csBlue; set { _csBlue = value; UpdateCS(); } }
+    // Kill数
     int _killCountBlue = 0;
     public int KillCountBlue { set { _killCountBlue = value; if (_killCountBlue >= _killFinishCount) FinishGame(true); } }
 
@@ -25,19 +28,29 @@ public class InGameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    private void Update()
+    /// <summary>csが更新されたとき</summary>
+    void UpdateCS()
     {
-        _gameTime += Time.deltaTime;
-        _updateAction?.Invoke();
+        // テキスト更新
+
+        // ゲーム終了判定
+        if (_csBlue >= _csFinishCount) FinishGame(true);
+        // redの判定
     }
 
     void FinishGame(bool winTeamIsBlue)
     {
-
+        Debug.Log("finish game");
     }
 
     public void SetUpdateAction(Action action)
     {
         _updateAction += action;
+    }
+
+    private void Update()
+    {
+        _gameTime += Time.deltaTime;
+        _updateAction?.Invoke();
     }
 }
